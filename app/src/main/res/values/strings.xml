@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SampleMoviesApp</string>
+
+    <string name="sort_by">Sort By</string>
+</resources>
