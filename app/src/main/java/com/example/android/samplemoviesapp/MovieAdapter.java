@@ -3,6 +3,7 @@ package com.example.android.samplemoviesapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,14 @@ import java.util.List;
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
-    private Context mContext;
-    private Picasso sPicasso;
+    private Context context;
+    private Picasso picasso;
 
     public MovieAdapter(Context context, List<Movie> movies){
 
         super(context,0,movies);
-        mContext = context;
-        sPicasso = Picasso.with(context);
+        this.context = context;
+        picasso = Picasso.with(context);
 
     }
 
@@ -41,10 +42,11 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         ImageView imageView = (ImageView)convertView.findViewById(R.id.movie_image);
 
-        String poster = NetworkUtils.buildPosterPath(currentMovie.getPosterPath());
+        String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster_path());
+        //Log.d(TAG, "Created Poster Link:" +poster);
 
-        if(poster!=null && !poster.equals("")){
-            sPicasso.load(poster).into(imageView);
+        if(!TextUtils.isEmpty(poster)){
+            picasso.load(poster).into(imageView);
         }
 
         return convertView;
