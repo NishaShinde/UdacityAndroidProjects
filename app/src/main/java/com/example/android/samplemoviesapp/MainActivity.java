@@ -1,7 +1,10 @@
 package com.example.android.samplemoviesapp;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -59,10 +62,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
+        if(networkInfo!=null && networkInfo.isConnected()){
+            getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
+        }else{
+            dismissLoadingIndicator();
+            mEmptyTextView.setText(R.string.no_internet);
+        }
     }
 
-    private static String buildUri(){
+    private String buildUri(){
         Uri builtUri = Uri.parse(MOVIE_DB_API).buildUpon()
                 .appendPath(SORT_BY)
                 .appendQueryParameter(QUERY_API_KEY,API_KEY)
@@ -79,11 +89,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new MovieLoader(this,buildUri());
     }
 
-    @Override
-    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+    private void dismissLoadingIndicator(){
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+        dismissLoadingIndicator();
         mEmptyTextView.setText(R.string.no_movies);
         mAdapter.clear();
         if(data!=null && !data.isEmpty()){
