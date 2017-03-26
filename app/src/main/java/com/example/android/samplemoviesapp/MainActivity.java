@@ -1,5 +1,7 @@
 package com.example.android.samplemoviesapp;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +19,11 @@ import com.example.android.samplemoviesapp.Utils.NetworkUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private static final int MOVIE_LOADER_ID=1;
 
     private static final String MOVIE_DB_API = "https://api.themoviedb.org/3/movie";
     private static final String SORT_BY = "popular";
@@ -52,15 +56,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
+    }
+
+    private static String buildUri(){
         Uri builtUri = Uri.parse(MOVIE_DB_API).buildUpon()
                 .appendPath(SORT_BY)
                 .appendQueryParameter(QUERY_API_KEY,API_KEY)
                 .build();
 
-        Log.d(TAG, "Built Uri: "+builtUri.toString());
+        String uriString = builtUri.toString();
+        Log.d(TAG, "buildUri: Uril built is "+uriString);
 
-        new MovieDbQueryTask().execute(builtUri.toString());
+        return uriString;
+    }
 
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+        return new MovieLoader(this,buildUri());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+        mAdapter.clear();
+        if(data!=null && !data.isEmpty()){
+            mAdapter.addAll(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Movie>> loader) {
+        mAdapter.clear();
     }
 
     @Override
