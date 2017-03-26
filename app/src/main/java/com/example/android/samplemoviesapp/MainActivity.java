@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+        View loadingIndicator = findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+
         mEmptyTextView.setText(R.string.no_movies);
         mAdapter.clear();
         if(data!=null && !data.isEmpty()){
