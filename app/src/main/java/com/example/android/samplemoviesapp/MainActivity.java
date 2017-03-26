@@ -3,7 +3,6 @@ package com.example.android.samplemoviesapp;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
-
-import com.example.android.samplemoviesapp.Utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .build();
 
         String uriString = builtUri.toString();
-        Log.d(TAG, "buildUri: Uril built is "+uriString);
+        Log.d(TAG, "buildUri: Uri built is "+uriString);
 
         return uriString;
     }
@@ -102,26 +99,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Toast.makeText(this, "Sort By Menu Item Clicked.", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private class MovieDbQueryTask extends AsyncTask<String,Void,List<Movie>>{
-
-        @Override
-        protected List<Movie> doInBackground(String... url) {
-            if(url.length==0 || url[0]==null){
-                return null;
-            }
-
-            List<Movie> result = NetworkUtils.fetchPopularMovies(url[0]);
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-            mAdapter.clear();
-            if(movies!=null && !movies.isEmpty()){
-                mAdapter.addAll(movies);
-            }
-        }
     }
 }
