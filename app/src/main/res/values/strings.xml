@@ -2,4 +2,5 @@
     <string name="app_name">Popular Movies</string>
 
     <string name="sort_by">Sort By</string>
+    <string name="no_movies">No Movies Found.</string>
 </resources>

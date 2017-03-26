@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private TextView mEmptyTextView;
 
     private static final int MOVIE_LOADER_ID=1;
 
@@ -39,9 +42,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mEmptyTextView = (TextView)findViewById(R.id.emptyTextView);
+
         mAdapter = new MovieAdapter(this,new ArrayList<Movie>());
 
         GridView gridView = (GridView) findViewById(R.id.movie_grid);
+        gridView.setEmptyView(mEmptyTextView);
         gridView.setAdapter(mAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+        mEmptyTextView.setText(R.string.no_movies);
         mAdapter.clear();
         if(data!=null && !data.isEmpty()){
             mAdapter.addAll(data);
