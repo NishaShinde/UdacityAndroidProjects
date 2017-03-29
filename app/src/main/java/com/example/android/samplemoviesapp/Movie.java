@@ -1,10 +1,13 @@
 package com.example.android.samplemoviesapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by dell on 11/03/2017.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
 
     private String poster_path;
     private String original_title;
@@ -12,8 +15,44 @@ public class Movie {
     private int user_rating;
     private String release_date;
 
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator<Movie>(){
+
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[0];
+        }
+    };
+
+    private Movie(Parcel in){
+        poster_path=in.readString();
+        original_title=in.readString();
+        plot_synopsis=in.readString();
+        user_rating=in.readInt();
+        release_date=in.readString();
+    }
+
     public Movie(){
         // Default Constructor
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(poster_path);
+        dest.writeString(original_title);
+        dest.writeString(plot_synopsis);
+        dest.writeInt(user_rating);
+        dest.writeString(release_date);
     }
 
     public String getPoster_path() {
@@ -66,4 +105,5 @@ public class Movie {
                 ", release_date='" + release_date + '\'' +
                 '}';
     }
+
 }
