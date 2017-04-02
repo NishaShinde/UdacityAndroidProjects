@@ -26,10 +26,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private TextView mEmptyTextView;
 
+    private String sortType="popular";
+
     private static final int MOVIE_LOADER_ID=1;
+    private static final int MOVIE_LOADER_ID_TOP_RATED=2;
 
     private static final String MOVIE_DB_API = "https://api.themoviedb.org/3/movie";
-    private static final String SORT_BY = "popular";
     private static final String QUERY_API_KEY = "api_key";
     private static final String API_KEY ="c9d1bf2e884bf01ce5e41d543111ad01";
 
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private String buildUri(){
         Uri builtUri = Uri.parse(MOVIE_DB_API).buildUpon()
-                .appendPath(SORT_BY)
+                .appendPath(sortType)
                 .appendQueryParameter(QUERY_API_KEY,API_KEY)
                 .build();
 
@@ -118,8 +120,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClicked = item.getItemId();
-        if(itemThatWasClicked == R.id.action_sort_by){
-            Toast.makeText(this, "Sort By Menu Item Clicked.", Toast.LENGTH_SHORT).show();
+        if(itemThatWasClicked == R.id.action_popularity){
+            sortType="populer";
+            getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
+        }else if(itemThatWasClicked == R.id.action_top_rated){
+            sortType="top_rated";
+            getLoaderManager().initLoader(MOVIE_LOADER_ID_TOP_RATED,null,this);
         }
         return super.onOptionsItemSelected(item);
     }

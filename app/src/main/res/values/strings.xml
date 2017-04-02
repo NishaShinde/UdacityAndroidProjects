@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Popular Movies</string>
 
-    <string name="sort_by">Sort By</string>
+    <string name="sort_by_popularity">Most Popular</string>
+    <string name="sort_by_rating">Top Rated</string>
     <string name="no_movies">No Movies Found.</string>
     <string name="no_internet">No Internet Connection.</string>
 </resources>
