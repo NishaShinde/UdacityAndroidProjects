@@ -2,6 +2,7 @@ package com.example.android.samplemoviesapp;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie currentMovie = mAdapter.getItem(position);
-                Toast.makeText(MainActivity.this, currentMovie.getOriginal_title()
-                        + " Clicked.!!!", Toast.LENGTH_SHORT).show();
+                Intent movieIntent = new Intent(getApplicationContext(),DetailsActivity.class);
+                movieIntent.putExtra("Current Movie",currentMovie);
+                startActivity(movieIntent);
             }
         });
 

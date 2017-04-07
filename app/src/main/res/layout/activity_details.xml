@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.android.samplemoviesapp.DetailsActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:id="@+id/nameTextView"
+        tools:text="Movie Name"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/posterImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/nameTextView" />
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:padding="10dp"
+        android:layout_below="@+id/nameTextView"
+        android:id="@+id/movieDetails"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/posterImageView">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Dummy Text"
+            android:padding="5dp"
+            android:id="@+id/yearTextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Dummy Text"
+            android:padding="5dp"
+            android:id="@+id/ratingTextView" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/favButton"
+            android:text="Mark Favourite"
+            android:textAllCaps="true"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Dummy Text"
+        android:layout_below="@+id/posterImageView"
+        android:padding="15dp"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:id="@+id/overviewTextView" />
+
+</RelativeLayout>

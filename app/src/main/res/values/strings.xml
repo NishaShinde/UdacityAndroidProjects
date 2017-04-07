@@ -3,7 +3,11 @@
 
     <string name="sort_by_popularity">Most Popular</string>
     <string name="sort_by_rating">Top Rated</string>
-    
+
     <string name="no_movies">No Movies Found.</string>
     <string name="no_internet">No Internet Connection.</string>
+
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
