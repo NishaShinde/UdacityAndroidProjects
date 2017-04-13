@@ -1,15 +1,10 @@
-package com.example.android.samplemoviesapp;
+package com.example.android.popularmoviesapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.android.samplemoviesapp.Utils.NetworkUtils;
-import com.squareup.picasso.Picasso;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -30,7 +25,9 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(com.example.android.popularmoviesapp.R.layout.activity_details);
+
+        /**
 
         mNameTextView = (TextView) findViewById(R.id.nameTextView);
         mPosterImageView = (ImageView)findViewById(R.id.posterImageView);
@@ -57,5 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
         mRatingTextView.setText(Integer.toString(myParcelableMovie.getUser_rating()));
         mOverviewTextView.setText(myParcelableMovie.getPlot_synopsis());
         mYearTextView.setText(myParcelableMovie.getRelease_date());
+         **/
     }
+
 }

@@ -1,9 +1,9 @@
-package com.example.android.samplemoviesapp;
+package com.example.android.popularmoviesapp;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
-import com.example.android.samplemoviesapp.Utils.NetworkUtils;
+import com.example.android.popularmoviesapp.Utils.NetworkUtils;
 
 import java.util.List;
 

@@ -1,66 +1,49 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/activity_horizontal_margin"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_vertical_margin"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.samplemoviesapp.DetailsActivity">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:id="@+id/nameTextView"
-        tools:text="Movie Name"
-        android:textAppearance="?android:textAppearanceLarge" />
+    tools:context="com.example.android.popularmoviesapp.DetailsActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <ImageView
-        android:id="@+id/posterImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/nameTextView" />
+        android:id="@+id/imageView"
+        android:layout_width="384dp"
+        android:layout_height="199dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="-5dp" />
 
-    <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:padding="10dp"
-        android:layout_below="@+id/nameTextView"
-        android:id="@+id/movieDetails"
-        android:orientation="vertical"
-        android:layout_toRightOf="@+id/posterImageView">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Dummy Text"
-            android:padding="5dp"
-            android:id="@+id/yearTextView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Dummy Text"
-            android:padding="5dp"
-            android:id="@+id/ratingTextView" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/favButton"
-            android:text="Mark Favourite"
-            android:textAllCaps="true"/>
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="128dp"
+        android:layout_height="155dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        tools:layout_editor_absoluteY="116dp"
+        tools:layout_editor_absoluteX="33dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Dummy Text"
-        android:layout_below="@+id/posterImageView"
-        android:padding="15dp"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:id="@+id/overviewTextView" />
+        android:id="@+id/textView"
+        android:layout_width="176dp"
+        android:layout_height="35dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="177dp"
+        tools:layout_editor_absoluteY="214dp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="176dp"
+        android:layout_height="25dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="177dp"
+        tools:layout_editor_absoluteY="271dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="351dp"
+        android:layout_height="136dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteY="324dp"
+        tools:layout_editor_absoluteX="17dp" />
+</android.support.constraint.ConstraintLayout>

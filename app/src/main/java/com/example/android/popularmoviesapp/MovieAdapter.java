@@ -1,4 +1,4 @@
-package com.example.android.samplemoviesapp;
+package com.example.android.popularmoviesapp;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.example.android.samplemoviesapp.Utils.NetworkUtils;
+import com.example.android.popularmoviesapp.Utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,10 +37,10 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.grid_item,parent,false);
+                    com.example.android.popularmoviesapp.R.layout.grid_item,parent,false);
         }
 
-        ImageView imageView = (ImageView)convertView.findViewById(R.id.movie_image);
+        ImageView imageView = (ImageView)convertView.findViewById(com.example.android.popularmoviesapp.R.id.movie_image);
 
         String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster_path());
         //Log.d(TAG, "Created Poster Link:" +poster);

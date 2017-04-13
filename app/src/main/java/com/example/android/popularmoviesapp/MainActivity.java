@@ -1,4 +1,4 @@
-package com.example.android.samplemoviesapp;
+package com.example.android.popularmoviesapp;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -44,13 +44,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.example.android.popularmoviesapp.R.layout.activity_main);
 
-        mEmptyTextView = (TextView)findViewById(R.id.emptyTextView);
+        mEmptyTextView = (TextView)findViewById(com.example.android.popularmoviesapp.R.id.emptyTextView);
 
         mAdapter = new MovieAdapter(this,new ArrayList<Movie>());
 
-        GridView gridView = (GridView) findViewById(R.id.movie_grid);
+        GridView gridView = (GridView) findViewById(com.example.android.popularmoviesapp.R.id.movie_grid);
         gridView.setEmptyView(mEmptyTextView);
         gridView.setAdapter(mAdapter);
 
@@ -70,14 +70,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
         }else{
             dismissLoadingIndicator();
-            mEmptyTextView.setText(R.string.no_internet);
+            mEmptyTextView.setText(com.example.android.popularmoviesapp.R.string.no_internet);
         }
     }
 
     private String buildUri(){
         Uri builtUri = Uri.parse(MOVIE_DB_API).buildUpon()
                 .appendPath(sortType)
-                .appendQueryParameter(QUERY_API_KEY,BuildConfig.THE_MOVIE_DB_API_KEY)
+                .appendQueryParameter(QUERY_API_KEY, BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
 
         String uriString = builtUri.toString();
@@ -92,14 +92,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void dismissLoadingIndicator(){
-        View loadingIndicator = findViewById(R.id.loading_indicator);
+        View loadingIndicator = findViewById(com.example.android.popularmoviesapp.R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
         dismissLoadingIndicator();
-        mEmptyTextView.setText(R.string.no_movies);
+        mEmptyTextView.setText(com.example.android.popularmoviesapp.R.string.no_movies);
         mAdapter.clear();
         if(data!=null && !data.isEmpty()){
             mAdapter.addAll(data);
@@ -113,17 +113,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item,menu);
+        getMenuInflater().inflate(com.example.android.popularmoviesapp.R.menu.menu_item,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClicked = item.getItemId();
-        if(itemThatWasClicked == R.id.action_popularity){
+        if(itemThatWasClicked == com.example.android.popularmoviesapp.R.id.action_popularity){
             sortType="populer";
             getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
-        }else if(itemThatWasClicked == R.id.action_top_rated){
+        }else if(itemThatWasClicked == com.example.android.popularmoviesapp.R.id.action_top_rated){
             sortType="top_rated";
             getLoaderManager().initLoader(MOVIE_LOADER_ID_TOP_RATED,null,this);
         }

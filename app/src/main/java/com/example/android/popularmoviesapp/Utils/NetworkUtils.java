@@ -1,10 +1,10 @@
-package com.example.android.samplemoviesapp.Utils;
+package com.example.android.popularmoviesapp.Utils;
 
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.android.samplemoviesapp.Movie;
+import com.example.android.popularmoviesapp.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
