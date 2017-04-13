@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String MOVIE_DB_API = "https://api.themoviedb.org/3/movie";
     private static final String QUERY_API_KEY = "api_key";
-    private static final String API_KEY ="c9d1bf2e884bf01ce5e41d543111ad01";
 
 
     /**Sample URL to display movies sorted by popular
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private String buildUri(){
         Uri builtUri = Uri.parse(MOVIE_DB_API).buildUpon()
                 .appendPath(sortType)
-                .appendQueryParameter(QUERY_API_KEY,API_KEY)
+                .appendQueryParameter(QUERY_API_KEY,BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
 
         String uriString = builtUri.toString();
