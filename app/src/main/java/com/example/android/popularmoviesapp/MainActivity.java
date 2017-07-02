@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie currentMovie = mAdapter.getItem(position);
                 Intent movieIntent = new Intent(getApplicationContext(),DetailsActivity.class);
-                movieIntent.putExtra("Current Movie",currentMovie);
+                movieIntent.putExtra(Intent.EXTRA_TEXT,currentMovie);
                 startActivity(movieIntent);
+                Log.d(TAG, "Clicked movie: "+currentMovie.toString());
             }
         });
 

@@ -1,10 +1,21 @@
 package com.example.android.popularmoviesapp;
 
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.example.android.popularmoviesapp.Utils.NetworkUtils;
+import com.example.android.popularmoviesapp.databinding.ActivityDetailsBinding;
+import com.squareup.picasso.Picasso;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -14,47 +25,57 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
-    private TextView mNameTextView;
-    private ImageView mPosterImageView;
-    private TextView mYearTextView;
-    //private TextView mDurationTextView;
-    private TextView mRatingTextView;
-    private TextView mOverviewTextView;
-    private Button mFavButton;
+     ActivityDetailsBinding mBinding;
+
+    private Movie myMovie;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.example.android.popularmoviesapp.R.layout.activity_details);
+        setContentView(R.layout.activity_details);
 
-        /**
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_details);
 
-        mNameTextView = (TextView) findViewById(R.id.nameTextView);
-        mPosterImageView = (ImageView)findViewById(R.id.posterImageView);
-        mYearTextView = (TextView)findViewById(R.id.yearTextView);
-        //mDurationTextView = (TextView)findViewById(R.id.durationTextView);
-        mRatingTextView = (TextView)findViewById(R.id.ratingTextView);
-        mOverviewTextView = (TextView)findViewById(R.id.overviewTextView);
-        mFavButton = (Button)findViewById(R.id.favButton);
+        Intent intent = getIntent();
 
-        Movie myParcelableMovie = (Movie) getIntent().getParcelableExtra("Current Movie");
-
-        if(myParcelableMovie == null){
-            Toast.makeText(this, "Oops!!! Something went wrong :( Please try again.", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Null object received for movie: "+myParcelableMovie.toString());
+        if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
+            myMovie = intent.getParcelableExtra(Intent.EXTRA_TEXT);
+            Log.d(TAG,"Clicked movie: "+myMovie.toString());
         }
 
-        Log.d(TAG, "Current Movie: "+myParcelableMovie.toString());
+        displayMovieDetails(myMovie);
+    }
 
-        mNameTextView.setText(myParcelableMovie.getOriginal_title());
+    public static void loadImage(ImageView view, String url) {
+        String imageUrl = NetworkUtils.buildPosterPath(url);
+        Picasso.with(view.getContext()).load(imageUrl).into(view);
+    }
 
-        String posterPath = NetworkUtils.buildPosterPath(myParcelableMovie.getPoster_path());
-        Picasso.with(this).load(posterPath).into(mPosterImageView);
+    private void displayMovieDetails(Movie movie){
 
-        mRatingTextView.setText(Integer.toString(myParcelableMovie.getUser_rating()));
-        mOverviewTextView.setText(myParcelableMovie.getPlot_synopsis());
-        mYearTextView.setText(myParcelableMovie.getRelease_date());
-         **/
+        if(movie != null){
+            loadImage(mBinding.posterImageView,movie.getPoster());
+            loadImage(mBinding.backdropImageView,movie.getBackdropPath());
+            mBinding.movieNameTextView.setText(movie.getFormattedTitle());
+            mBinding.movieOverviewTextView.setText(movie.getOverview());
+            mBinding.movieRatingTextView.setText(String.valueOf(movie.getRating()));
+            mBinding.releaseDateTextView.setText(formatDate(movie.getReleaseDate()));
+        }
+
+    }
+
+    private String formatDate(String date){
+        DateFormat parser = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat formatter = new SimpleDateFormat("d MMM yyyy",Locale.getDefault());
+        try {
+            Date convertedDate = parser.parse(date);
+            return formatter.format(convertedDate);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

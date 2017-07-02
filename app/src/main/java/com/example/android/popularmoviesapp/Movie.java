@@ -9,11 +9,12 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-    private String poster_path;
-    private String original_title;
-    private String plot_synopsis;
-    private int user_rating;
-    private String release_date;
+    private String mPoster;
+    private String mBackdropPath;
+    private String mTitle;
+    private String mOverview;
+    private float mRating;
+    private String mReleaseDate;
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator<Movie>(){
 
@@ -29,11 +30,12 @@ public class Movie implements Parcelable {
     };
 
     private Movie(Parcel in){
-        poster_path=in.readString();
-        original_title=in.readString();
-        plot_synopsis=in.readString();
-        user_rating=in.readInt();
-        release_date=in.readString();
+        mPoster=in.readString();
+        mBackdropPath=in.readString();
+        mTitle=in.readString();
+        mOverview=in.readString();
+        mRating=in.readFloat();
+        mReleaseDate=in.readString();
     }
 
     public Movie(){
@@ -48,62 +50,78 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(poster_path);
-        dest.writeString(original_title);
-        dest.writeString(plot_synopsis);
-        dest.writeInt(user_rating);
-        dest.writeString(release_date);
+        dest.writeString(mPoster);
+        dest.writeString(mBackdropPath);
+        dest.writeString(mTitle);
+        dest.writeString(mOverview);
+        dest.writeFloat(mRating);
+        dest.writeString(mReleaseDate);
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getPoster() {
+        return mPoster;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
+    public void setPoster(String mPoster) {
+        this.mPoster = mPoster;
     }
 
-    public String getOriginal_title() {
-        return original_title;
+    public String getBackdropPath() {
+        return mBackdropPath;
     }
 
-    public void setOriginal_title(String original_title) {
-        this.original_title = original_title;
+    public void setBackdropPath(String mBackdropPath) {
+        this.mBackdropPath = mBackdropPath;
     }
 
-    public String getPlot_synopsis() {
-        return plot_synopsis;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public void setPlot_synopsis(String plot_synopsis) {
-        this.plot_synopsis = plot_synopsis;
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 
-    public int getUser_rating() {
-        return user_rating;
+    public String getOverview() {
+        return mOverview;
     }
 
-    public void setUser_rating(int user_rating) {
-        this.user_rating = user_rating;
+    public void setOverview(String mOverview) {
+        this.mOverview = mOverview;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public float getRating() {
+        return mRating;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    public void setRating(float mRating) {
+        this.mRating = mRating;
+    }
+
+    public String getReleaseDate() {
+        return mReleaseDate;
+    }
+
+    public void setReleaseDate(String mReleaseDate) {
+        this.mReleaseDate = mReleaseDate;
     }
 
     @Override
     public String toString() {
         return "Movie{" +
-                "poster_path='" + poster_path + '\'' +
-                ", original_title='" + original_title + '\'' +
-                ", plot_synopsis='" + plot_synopsis + '\'' +
-                ", user_rating=" + user_rating +
-                ", release_date='" + release_date + '\'' +
+                "mPoster='" + mPoster + '\'' +
+                ", mBackdropPath='" + mBackdropPath + '\'' +
+                ", mTitle='" + mTitle + '\'' +
+                ", mOverview='" + mOverview + '\'' +
+                ", mRating=" + mRating +
+                ", mReleaseDate='" + mReleaseDate + '\'' +
                 '}';
     }
 
+    public String getFormattedTitle(){
+        StringBuilder title = new StringBuilder(mTitle);
+        String[] rDate = mReleaseDate.split("-");
+        return title.append(" ("+rDate[0]+")").toString();
+
+    }
 }

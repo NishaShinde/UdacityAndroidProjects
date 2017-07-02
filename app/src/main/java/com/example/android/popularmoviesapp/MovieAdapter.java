@@ -42,7 +42,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         ImageView imageView = (ImageView)convertView.findViewById(com.example.android.popularmoviesapp.R.id.movie_image);
 
-        String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster_path());
+        String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster());
         //Log.d(TAG, "Created Poster Link:" +poster);
 
         if(!TextUtils.isEmpty(poster)){

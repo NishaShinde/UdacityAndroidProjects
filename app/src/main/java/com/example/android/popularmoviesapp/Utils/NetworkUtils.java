@@ -71,17 +71,19 @@ public final class NetworkUtils {
             for (int i = 0; i < results.length(); i++) {
                 JSONObject currentMovie = results.getJSONObject(i);
                 String poster_path = currentMovie.getString("poster_path");
+                String backdrop_path = currentMovie.getString("backdrop_path");
                 String original_title = currentMovie.getString("original_title");
                 String overview = currentMovie.getString("overview");
-                int user_rating = currentMovie.getInt("vote_average");
+                String rating = currentMovie.getString("vote_average");
                 String release_date = currentMovie.getString("release_date");
 
                 Movie movie = new Movie();
-                movie.setPoster_path(poster_path);
-                movie.setOriginal_title(original_title);
-                movie.setPlot_synopsis(overview);
-                movie.setUser_rating(user_rating);
-                movie.setRelease_date(release_date);
+                movie.setPoster(poster_path);
+                movie.setBackdropPath(backdrop_path);
+                movie.setTitle(original_title);
+                movie.setOverview(overview);
+                movie.setRating(Float.parseFloat(rating));
+                movie.setReleaseDate(release_date);
 
                 movies.add(movie);
                 Log.v(TAG,"Movie added: "+movie.toString());
