@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.android.popularmoviesapp.Utils.NetworkUtils;
@@ -41,7 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
             myMovie = intent.getParcelableExtra(Intent.EXTRA_TEXT);
-            Log.d(TAG,"Clicked movie: "+myMovie.toString());
+            //Log.d(TAG,"Clicked movie: "+myMovie.toString());
         }
 
         displayMovieDetails(myMovie);
@@ -59,7 +58,7 @@ public class DetailsActivity extends AppCompatActivity {
             loadImage(mBinding.backdropImageView,movie.getBackdropPath());
             mBinding.movieNameTextView.setText(movie.getFormattedTitle());
             mBinding.movieOverviewTextView.setText(movie.getOverview());
-            mBinding.movieRatingTextView.setText(String.valueOf(movie.getRating()));
+            mBinding.movieRatingTextView.setText(formatRating(movie.getRating()));
             mBinding.releaseDateTextView.setText(formatDate(movie.getReleaseDate()));
         }
 
@@ -76,6 +75,12 @@ public class DetailsActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private String formatRating(float rating){
+        return new StringBuilder(Float.toString(rating))
+                .append(" / 10")
+                .toString();
     }
 
 }

@@ -18,14 +18,14 @@ import java.util.List;
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
-    private Context context;
-    private Picasso picasso;
+    private Context mContext;
+    private Picasso mPicasso;
 
     public MovieAdapter(Context context, List<Movie> movies){
 
         super(context,0,movies);
-        this.context = context;
-        picasso = Picasso.with(context);
+        mContext = context;
+        mPicasso = Picasso.with(mContext);
 
     }
 
@@ -43,10 +43,9 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         ImageView imageView = (ImageView)convertView.findViewById(com.example.android.popularmoviesapp.R.id.movie_image);
 
         String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster());
-        //Log.d(TAG, "Created Poster Link:" +poster);
 
         if(!TextUtils.isEmpty(poster)){
-            picasso.load(poster).into(imageView);
+            mPicasso.load(poster).into(imageView);
         }
 
         return convertView;

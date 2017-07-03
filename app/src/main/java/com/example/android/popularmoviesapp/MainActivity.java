@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private String sortType="popular";
 
-    private static final int MOVIE_LOADER_ID=1;
+    private static final int MOVIE_LOADER_ID_MOST_POPULAR=1;
     private static final int MOVIE_LOADER_ID_TOP_RATED=2;
 
     private static final String MOVIE_DB_API = "https://api.themoviedb.org/3/movie";
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private MovieAdapter mAdapter;
 
+    private GridView mGridView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +52,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mAdapter = new MovieAdapter(this,new ArrayList<Movie>());
 
-        GridView gridView = (GridView) findViewById(com.example.android.popularmoviesapp.R.id.movie_grid);
-        gridView.setEmptyView(mEmptyTextView);
-        gridView.setAdapter(mAdapter);
+        mGridView = (GridView) findViewById(com.example.android.popularmoviesapp.R.id.movie_grid);
+        mGridView.setEmptyView(mEmptyTextView);
+        mGridView.setAdapter(mAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie currentMovie = mAdapter.getItem(position);
@@ -68,7 +70,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
         if(networkInfo!=null && networkInfo.isConnected()){
-            getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
+            /**
+             * By default, Open the activity for Most Popular movies.
+             */
+            getLoaderManager().initLoader(MOVIE_LOADER_ID_MOST_POPULAR,null,this);
         }else{
             dismissLoadingIndicator();
             mEmptyTextView.setText(com.example.android.popularmoviesapp.R.string.no_internet);
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         dismissLoadingIndicator();
         mEmptyTextView.setText(com.example.android.popularmoviesapp.R.string.no_movies);
         mAdapter.clear();
+
         if(data!=null && !data.isEmpty()){
             mAdapter.addAll(data);
         }
@@ -123,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int itemThatWasClicked = item.getItemId();
         if(itemThatWasClicked == com.example.android.popularmoviesapp.R.id.action_popularity){
             sortType="populer";
-            getLoaderManager().initLoader(MOVIE_LOADER_ID,null,this);
+            getLoaderManager().initLoader(MOVIE_LOADER_ID_MOST_POPULAR,null,this);
         }else if(itemThatWasClicked == com.example.android.popularmoviesapp.R.id.action_top_rated){
             sortType="top_rated";
             getLoaderManager().initLoader(MOVIE_LOADER_ID_TOP_RATED,null,this);
