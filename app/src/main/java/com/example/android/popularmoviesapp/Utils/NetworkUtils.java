@@ -31,7 +31,7 @@ public final class NetworkUtils {
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE  = "w185";
 
-    private NetworkUtils(){};
+    private NetworkUtils(){}
 
     public static String buildPosterPath(String poster){
         String result = null;
@@ -54,8 +54,7 @@ public final class NetworkUtils {
             Log.e(TAG, "fetchPopularMovies: Exception caught in making HTTP request");
         }
 
-        List<Movie> popularMovies = extractMoviesFromJson(jsonResponse);
-        return popularMovies;
+        return extractMoviesFromJson(jsonResponse);
     }
 
     private static List<Movie> extractMoviesFromJson(String response){

@@ -121,7 +121,7 @@ public class Movie implements Parcelable {
     public String getFormattedTitle(){
         StringBuilder title = new StringBuilder(mTitle);
         String[] rDate = mReleaseDate.split("-");
-        return title.append(" ("+rDate[0]+")").toString();
+        return title.append(" (").append(rDate[0]).append(")").toString();
 
     }
 }

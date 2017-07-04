@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
         if(networkInfo!=null && networkInfo.isConnected()){
-            /**
-             * By default, Open the activity for Most Popular movies.
+            /*
+              By default, Open the activity for Most Popular movies.
              */
             getLoaderManager().initLoader(MOVIE_LOADER_ID_MOST_POPULAR,null,this);
         }else{

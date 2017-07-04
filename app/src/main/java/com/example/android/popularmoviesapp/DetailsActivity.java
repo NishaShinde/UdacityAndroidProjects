@@ -24,10 +24,9 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
-     ActivityDetailsBinding mBinding;
+    private ActivityDetailsBinding mBinding;
 
     private Movie myMovie;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +42,33 @@ public class DetailsActivity extends AppCompatActivity {
             //Log.d(TAG,"Clicked movie: "+myMovie.toString());
         }
 
-        displayMovieDetails(myMovie);
+        if(myMovie != null){
+            displayMovieDetails();
+        }
     }
 
-    public static void loadImage(ImageView view, String url) {
+    private static void loadImage(ImageView view, String url) {
         String imageUrl = NetworkUtils.buildPosterPath(url);
         Picasso.with(view.getContext()).load(imageUrl).into(view);
-    }
-
-    private void displayMovieDetails(Movie movie){
-
-        if(movie != null){
-            loadImage(mBinding.posterImageView,movie.getPoster());
-            loadImage(mBinding.backdropImageView,movie.getBackdropPath());
-            mBinding.movieNameTextView.setText(movie.getFormattedTitle());
-            mBinding.movieOverviewTextView.setText(movie.getOverview());
-            mBinding.movieRatingTextView.setText(formatRating(movie.getRating()));
-            mBinding.releaseDateTextView.setText(formatDate(movie.getReleaseDate()));
         }
 
+    private void displayMovieDetails(){
+
+        loadImage(mBinding.posterImageView,myMovie.getPoster());
+        loadImage(mBinding.backdropImageView,myMovie.getBackdropPath());
+
+        String movie = myMovie.getFormattedTitle();
+        mBinding.movieNameTextView.setText(movie);
+
+        mBinding.movieOverviewTextView.setText(myMovie.getOverview());
+        mBinding.movieRatingTextView.setText(formatRating(myMovie.getRating()));
+        mBinding.releaseDateTextView.setText(formatDate(myMovie.getReleaseDate()));
+
+        /*
+          Added Content Descriptions for poster and backdrop image views
+         */
+        mBinding.posterImageView.setContentDescription("Poster of "+movie);
+        mBinding.backdropImageView.setContentDescription("Backdrop of "+movie);
     }
 
     private String formatDate(String date){
@@ -78,9 +85,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private String formatRating(float rating){
-        return new StringBuilder(Float.toString(rating))
-                .append(" / 10")
-                .toString();
+        return Float.toString(rating) +
+                " / 10";
     }
 
 }

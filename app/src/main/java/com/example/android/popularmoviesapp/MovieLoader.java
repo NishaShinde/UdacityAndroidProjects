@@ -11,7 +11,7 @@ import java.util.List;
  * Created by dell on 26/03/2017.
  */
 
-public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
+class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
     private static final String TAG = MovieLoader.class.getSimpleName();
     private String mUrl;
@@ -33,7 +33,6 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
             return null;
         }
 
-        List<Movie> movies = NetworkUtils.fetchPopularMovies(mUrl);
-        return movies;
+        return NetworkUtils.fetchPopularMovies(mUrl);
     }
 }

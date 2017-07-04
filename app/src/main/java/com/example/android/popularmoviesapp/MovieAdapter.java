@@ -15,17 +15,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MovieAdapter extends ArrayAdapter<Movie> {
+class MovieAdapter extends ArrayAdapter<Movie> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
-    private Context mContext;
     private Picasso mPicasso;
 
     public MovieAdapter(Context context, List<Movie> movies){
 
         super(context,0,movies);
-        mContext = context;
-        mPicasso = Picasso.with(mContext);
+        mPicasso = Picasso.with(context);
 
     }
 
@@ -40,12 +38,25 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
                     com.example.android.popularmoviesapp.R.layout.grid_item,parent,false);
         }
 
+
         ImageView imageView = (ImageView)convertView.findViewById(com.example.android.popularmoviesapp.R.id.movie_image);
+
+
+        if(currentMovie == null){
+            return null;
+        }
 
         String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster());
 
+        //Title for setting content description
+        String title = currentMovie.getFormattedTitle();
+
         if(!TextUtils.isEmpty(poster)){
             mPicasso.load(poster).into(imageView);
+            /*
+              Added Content Descriptions for image view
+             */
+            imageView.setContentDescription(title);
         }
 
         return convertView;
