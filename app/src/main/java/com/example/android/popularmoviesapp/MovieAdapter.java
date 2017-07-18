@@ -46,7 +46,7 @@ class MovieAdapter extends ArrayAdapter<Movie> {
             return null;
         }
 
-        String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster());
+        String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster(),false);
 
         //Title for setting content description
         String title = currentMovie.getFormattedTitle();

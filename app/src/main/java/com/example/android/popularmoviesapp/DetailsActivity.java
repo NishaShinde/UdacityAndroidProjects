@@ -47,15 +47,15 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    private static void loadImage(ImageView view, String url) {
-        String imageUrl = NetworkUtils.buildPosterPath(url);
+    private static void loadImage(ImageView view, String url,boolean isBackdrop) {
+        String imageUrl = NetworkUtils.buildPosterPath(url,isBackdrop);
         Picasso.with(view.getContext()).load(imageUrl).into(view);
         }
 
     private void displayMovieDetails(){
 
-        loadImage(mBinding.posterImageView,myMovie.getPoster());
-        loadImage(mBinding.backdropImageView,myMovie.getBackdropPath());
+        loadImage(mBinding.posterImageView,myMovie.getPoster(),false);
+        loadImage(mBinding.backdropImageView,myMovie.getBackdropPath(),true);
 
         String movie = myMovie.getFormattedTitle();
         mBinding.movieNameTextView.setText(movie);

@@ -29,16 +29,19 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
-    private static final String IMAGE_SIZE  = "w185";
+    private static final String POSTER_IMAGE_SIZE  = "w185";
+    private static final String BACKDROP_IMAGE_SIZE="w342";
 
     private NetworkUtils(){}
 
-    public static String buildPosterPath(String poster){
+    public static String buildPosterPath(String poster,boolean isBackdrop){
         String result = null;
+
+        String imageSize = isBackdrop ? BACKDROP_IMAGE_SIZE : POSTER_IMAGE_SIZE;
 
         if(!TextUtils.isEmpty(poster)){
             result = Uri.parse(IMAGE_BASE_URL).buildUpon()
-                    .appendPath(IMAGE_SIZE)
+                    .appendPath(imageSize)
                     .appendEncodedPath(poster).build().toString();
         }
         return result;
