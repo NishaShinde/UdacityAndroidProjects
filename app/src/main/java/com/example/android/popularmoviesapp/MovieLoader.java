@@ -15,6 +15,7 @@ class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
     private static final String TAG = MovieLoader.class.getSimpleName();
     private String mUrl;
+    private List<Movie> movieList;
 
 
     public MovieLoader(Context context,String url){
@@ -24,7 +25,17 @@ class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     protected void onStartLoading() {
-        forceLoad();
+        if(movieList != null){
+            deliverResult(movieList);
+        }else {
+            forceLoad();
+        }
+    }
+
+    @Override
+    public void deliverResult(List<Movie> data) {
+        movieList=data;
+        super.deliverResult(data);
     }
 
     @Override
