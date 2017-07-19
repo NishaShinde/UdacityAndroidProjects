@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
+ */
+
+
 package com.example.android.popularmoviesapp;
 
 import android.content.AsyncTaskLoader;
@@ -7,9 +12,6 @@ import com.example.android.popularmoviesapp.Utils.NetworkUtils;
 
 import java.util.List;
 
-/**
- * Created by dell on 26/03/2017.
- */
 
 class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 

@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
+ */
+
+
 package com.example.android.popularmoviesapp;
 
 import android.content.SharedPreferences;
@@ -7,8 +12,6 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
-
-import com.example.android.popularmoviesapp.R;
 
 /**
  * Created by dell on 18/07/2017.

@@ -16,3 +16,7 @@ The App:
         release date
 
 More features coming soon...!!!
+
+Instructions to Run the project:
+
+Please put your Movie DB API Key in gradle.properties file in MyTheMovieDBApiKey variable.

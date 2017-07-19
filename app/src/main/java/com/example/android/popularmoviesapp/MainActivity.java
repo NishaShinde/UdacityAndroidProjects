@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
+ */
+
+
 package com.example.android.popularmoviesapp;
 
 import android.app.LoaderManager;
@@ -26,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private TextView mEmptyTextView;
-
     private static final int MOVIES_LOADER_ID=0;
 
     private static boolean PREFERENCES_HAVE_BEEN_CHANGED=false;
@@ -35,13 +38,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String MOVIE_DB_API = "https://api.themoviedb.org/3/movie";
     private static final String QUERY_API_KEY = "api_key";
 
-
-    /**Sample URL to display movies sorted by popular
-     *https://api.themoviedb.org/3/movie/popular?api_key=c9d1bf2e884bf01ce5e41d543111ad01
-     */
-
     private MovieAdapter mAdapter;
-
+    private TextView mEmptyTextView;
     private GridView mGridView;
 
     @Override

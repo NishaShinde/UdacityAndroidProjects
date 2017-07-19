@@ -1,11 +1,12 @@
+/*
+ * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
+ */
+
+
 package com.example.android.popularmoviesapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-/**
- * Created by dell on 11/03/2017.
- */
 
 public class Movie implements Parcelable {
 
@@ -122,6 +123,5 @@ public class Movie implements Parcelable {
         StringBuilder title = new StringBuilder(mTitle);
         String[] rDate = mReleaseDate.split("-");
         return title.append(" (").append(rDate[0]).append(")").toString();
-
     }
 }

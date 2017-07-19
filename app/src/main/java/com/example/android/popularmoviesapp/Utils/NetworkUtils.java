@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
+ */
+
+
 package com.example.android.popularmoviesapp.Utils;
 
 import android.net.Uri;
@@ -19,10 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by dell on 11/03/2017.
- */
 
 public final class NetworkUtils {
 

@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
+ */
+
+
 package com.example.android.popularmoviesapp;
 
 import android.os.Bundle;
