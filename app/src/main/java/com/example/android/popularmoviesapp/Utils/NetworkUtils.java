@@ -30,7 +30,7 @@ public final class NetworkUtils {
 
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     private static final String POSTER_IMAGE_SIZE  = "w185";
-    private static final String BACKDROP_IMAGE_SIZE="w342";
+    private static final String BACKDROP_IMAGE_SIZE="w500";
 
     private NetworkUtils(){}
 

@@ -17,7 +17,7 @@
                 android:id="@+id/backdropImageView"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/posterImageView"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 android:layout_marginLeft="8dp"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 tools:text="Wonder Woman (2017)"
                 android:textColor="@android:color/white"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAppearance="?android:textAppearanceLarge"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginTop="8dp"
@@ -58,8 +58,7 @@
                 tools:text="@string/wonder_woman_overview"
                 app:layout_constraintLeft_toLeftOf="@+id/movieNameTextView"
                 android:layout_marginTop="8dp"
-                android:textSize="15sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textAppearance="?android:textAppearance"
                 app:layout_constraintTop_toBottomOf="@+id/movieNameTextView" />
 
             <RatingBar
@@ -68,14 +67,14 @@
                 android:layout_height="wrap_content"
                 android:numStars="1"
                 android:rating="1"
-                style="@style/Widget.AppCompat.RatingBar"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/posterImageView"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/movieOverviewTextView"
-                app:layout_constraintHorizontal_bias="0.076"
-                android:layout_marginStart="8dp" />
+                app:layout_constraintTop_toTopOf="@+id/posterImageView"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintHorizontal_bias="0.043"
+                android:layout_marginTop="32dp" />
 
             <TextView
                 android:id="@+id/movieRatingTextView"
@@ -83,7 +82,7 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/wonder_woman_rating"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                android:textAppearance="?android:textAppearanceMedium"
                 app:layout_constraintLeft_toRightOf="@+id/movieRatingBar"
                 android:layout_marginLeft="8dp"
                 app:layout_constraintTop_toTopOf="@+id/movieRatingBar"
@@ -98,8 +97,8 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/wonder_woman_release_date"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
                 android:layout_marginTop="8dp"
+                android:textAppearance="?android:textAppearanceMedium"
                 app:layout_constraintTop_toBottomOf="@+id/releaseDateLabel"
                 app:layout_constraintLeft_toLeftOf="@+id/releaseDateLabel" />
 
@@ -109,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/release_date_label"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAppearance="?android:textAppearance"
                 android:textColor="@android:color/darker_gray"
                 app:layout_constraintLeft_toLeftOf="@+id/movieRatingBar"
                 android:layout_marginTop="8dp"
