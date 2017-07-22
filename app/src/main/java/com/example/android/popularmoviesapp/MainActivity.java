@@ -66,9 +66,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
-        if(networkInfo!=null && networkInfo.isConnected()){
+        if(isNetworkAvailable()){
             getLoaderManager().initLoader(MOVIES_LOADER_ID,null,this);
         }else{
             dismissLoadingIndicator();
@@ -76,6 +74,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
