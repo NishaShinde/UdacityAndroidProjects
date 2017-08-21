@@ -6,65 +6,102 @@
 package com.example.android.popularmoviesapp;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.example.android.popularmoviesapp.Utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class MovieAdapter extends ArrayAdapter<Movie> {
+class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
-    private Picasso mPicasso;
+    private final Picasso mPicasso;
+    private List<Movie> mMoviesList;
+    private Context mContext;
+    final private ItemClickListener mItemClickListener;
 
-    public MovieAdapter(Context context, List<Movie> movies){
-
-        super(context,0,movies);
-        mPicasso = Picasso.with(context);
-
+    public interface ItemClickListener{
+        void onItemClick(Movie movie);
     }
 
-    @NonNull
+    public MovieAdapter(Context context, ItemClickListener mItemClickListener){
+        mContext = context;
+        mPicasso = Picasso.with(mContext);
+        mMoviesList = new ArrayList<>();
+        this.mItemClickListener = mItemClickListener;
+    }
+
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        Movie currentMovie = getItem(position);
-
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(
-                    com.example.android.popularmoviesapp.R.layout.grid_item,parent,false);
-        }
-
-
-        ImageView imageView = (ImageView)convertView.findViewById(com.example.android.popularmoviesapp.R.id.movie_image);
-
-
-        if(currentMovie == null){
-            return null;
-        }
-
-        String poster = NetworkUtils.buildPosterPath(currentMovie.getPoster(),false);
-
-        //Title for setting content description
-        String title = currentMovie.getFormattedTitle();
-
-        if(!TextUtils.isEmpty(poster)){
-            mPicasso.load(poster).into(imageView);
-            /*
-              Added Content Descriptions for image view
-             */
-            imageView.setContentDescription(title);
-        }
-
-        return convertView;
+    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.grid_movie_item,parent,false);
+        MovieViewHolder viewHolder = new MovieViewHolder(view);
+        return viewHolder;
     }
 
+    @Override
+    public void onBindViewHolder(MovieViewHolder holder, int position) {
+        Movie movie = mMoviesList.get(position);
+        holder.bind(movie);
+    }
+
+    @Override
+    public int getItemCount() {
+        if(mMoviesList.isEmpty()){
+            return 0;
+        }
+        return mMoviesList.size();
+    }
+
+    public void setMovieData(List<Movie> movie){
+        if(movie.isEmpty() || movie == null){
+            return;
+        }
+        mMoviesList.clear();
+        mMoviesList.addAll(movie);
+        notifyDataSetChanged();
+    }
+
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private ImageView mImageView;
+
+        public MovieViewHolder(View itemView) {
+            super(itemView);
+            mImageView = (ImageView)itemView.findViewById(R.id.movie_poster);
+            itemView.setOnClickListener(this);
+        }
+
+        void bind(Movie movie){
+            if(movie == null){
+                return;
+            }
+
+            String poster = NetworkUtils.buildPosterPath(movie.getPoster(),false);
+            //Title for setting content description
+            String a11yMoviePoster = movie.getFormattedTitle();
+
+            if(!TextUtils.isEmpty(poster)){
+                mPicasso.load(poster).into(mImageView);
+                mImageView.setContentDescription(a11yMoviePoster);
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Movie movie = mMoviesList.get(position);
+            Log.d(TAG,"onClick: Clicked on Movie"+movie.getTitle());
+            mItemClickListener.onItemClick(movie);
+        }
+
+    }
 }

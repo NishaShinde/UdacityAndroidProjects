@@ -4,19 +4,19 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@android:color/black">
-    <GridView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="auto_fit"
-        android:horizontalSpacing="@dimen/activity_short_margin"
-        android:verticalSpacing="@dimen/activity_short_margin"
-        android:stretchMode="columnWidth"
-        android:smoothScrollbar="true"
-        tools:context=".MainActivity"
-        android:id="@+id/movie_grid">
-    </GridView>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/rv_movies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
+    </ScrollView>
 
     <TextView
         android:layout_width="wrap_content"

@@ -1,11 +1,10 @@
 /*
  * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
  */
-
-
 package com.example.android.popularmoviesapp;
 
 import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -16,74 +15,55 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.android.popularmoviesapp.Utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>,SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>,SharedPreferences.OnSharedPreferenceChangeListener,MovieAdapter.ItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int MOVIES_LOADER_ID=0;
-
-    private static boolean PREFERENCES_HAVE_BEEN_CHANGED=false;
-
-    private static final String MOVIE_DB_API = "https://api.themoviedb.org/3/movie";
+    private static boolean PREFERENCES_HAVE_BEEN_CHANGED;
     private static final String QUERY_API_KEY = "api_key";
 
     private MovieAdapter mAdapter;
     private TextView mEmptyTextView;
-    private GridView mGridView;
+    private ProgressBar mLoadingIndicator;
+
+    private RecyclerView mRecyclerView;
+    private static final int NUM_OF_COLUMNS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.android.popularmoviesapp.R.layout.activity_main);
 
-        mEmptyTextView = (TextView)findViewById(com.example.android.popularmoviesapp.R.id.emptyTextView);
+        mRecyclerView = (RecyclerView)findViewById(R.id.rv_movies);
+        mEmptyTextView = (TextView)findViewById(R.id.emptyTextView);
+        mLoadingIndicator = (ProgressBar)findViewById(R.id.loading_indicator);
 
-        mAdapter = new MovieAdapter(this,new ArrayList<Movie>());
+        GridLayoutManager layoutManager = new GridLayoutManager(this,NUM_OF_COLUMNS);
 
-        mGridView = (GridView) findViewById(com.example.android.popularmoviesapp.R.id.movie_grid);
-        mGridView.setEmptyView(mEmptyTextView);
-        mGridView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
 
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie currentMovie = mAdapter.getItem(position);
-                Intent movieIntent = new Intent(getApplicationContext(),DetailsActivity.class);
-                movieIntent.putExtra(Intent.EXTRA_TEXT,currentMovie);
-                startActivity(movieIntent);
-                Log.d(TAG, "Clicked movie: "+currentMovie.toString());
-            }
-        });
+        mAdapter = new MovieAdapter(this,this);
 
-        if(isNetworkAvailable()){
-            getLoaderManager().initLoader(MOVIES_LOADER_ID,null,this);
-        }else{
-            dismissLoadingIndicator();
-            mEmptyTextView.setText(getString(R.string.no_internet));
-        }
+        mRecyclerView.setAdapter(mAdapter);
+        loadMovieData();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-    }
-
-    private boolean isNetworkAvailable(){
-        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
-        if(networkInfo != null && networkInfo.isConnected()){
-            return true;
-        }else{
-            return false;
-        }
     }
 
     @Override
@@ -101,47 +81,61 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
-    private String buildUri(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String sortKey = getString(R.string.sort_by_key);
-        String defaultSort = getString(R.string.sort_by_popularity);
-        String sortType=sharedPreferences.getString(sortKey,defaultSort);
-        Uri builtUri = Uri.parse(MOVIE_DB_API).buildUpon()
-                .appendPath(sortType)
-                .appendQueryParameter(QUERY_API_KEY, BuildConfig.THE_MOVIE_DB_API_KEY)
-                .build();
-
-        String uriString = builtUri.toString();
-        Log.d(TAG, "buildUri: Uri built is "+uriString);
-
-        return uriString;
-    }
-
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new MovieLoader(this,buildUri());
-    }
+        return new AsyncTaskLoader<List<Movie>>(this) {
 
-    private void dismissLoadingIndicator(){
-        View loadingIndicator = findViewById(com.example.android.popularmoviesapp.R.id.loading_indicator);
-        loadingIndicator.setVisibility(View.GONE);
+            List<Movie> movieList = new ArrayList<>();
+
+            @Override
+            protected void onStartLoading() {
+                if(!movieList.isEmpty()){
+                    deliverResult(movieList);
+                }else {
+                    mLoadingIndicator.setVisibility(View.VISIBLE);
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public void deliverResult(List<Movie> data) {
+                movieList.clear();
+                movieList.addAll(data);
+                super.deliverResult(data);
+            }
+
+            @Override
+            public List<Movie> loadInBackground() {
+                String uri = buildUri();
+
+                if(uri == null){
+                    return null;
+                }
+                List<Movie> movies = NetworkUtils.fetchPopularMovies(uri);
+                Log.d(TAG,"loadInBackground:"+movies.size());
+                return movies;
+            }
+
+        };
     }
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-        dismissLoadingIndicator();
-        mAdapter.clear();
+        mLoadingIndicator.setVisibility(View.GONE);
 
         if(data!=null && !data.isEmpty()){
-            mAdapter.addAll(data);
+            mAdapter.setMovieData(data);
+            showMovieData();
         }else {
+            Log.d(TAG,"Caught in No Movies found."+data+data.size());
+            showErrorMessage();
             mEmptyTextView.setText(getString(R.string.no_movies));
         }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
-        mAdapter.clear();
+        mAdapter.setMovieData(null);
     }
 
     @Override
@@ -165,6 +159,60 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         PREFERENCES_HAVE_BEEN_CHANGED=true;
     }
+
+    @Override
+    public void onItemClick(Movie movie) {
+        if(movie == null) return;
+
+        Intent movieIntent = new Intent(MainActivity.this,DetailsActivity.class);
+        movieIntent.putExtra(Intent.EXTRA_TEXT,movie);
+        startActivity(movieIntent);
+        Log.d(TAG,"onItemClick: "+movie.getTitle());
+    }
+
+    private String buildUri(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortKey = getString(R.string.sort_by_key);
+        String defaultSort = getString(R.string.sort_by_popularity);
+        String sortType=sharedPreferences.getString(sortKey,defaultSort);
+        Uri builtUri = Uri.parse(getString(R.string.movie_dp_api)).buildUpon()
+                .appendPath(sortType)
+                .appendQueryParameter(QUERY_API_KEY, BuildConfig.THE_MOVIE_DB_API_KEY)
+                .build();
+
+        String uriString = builtUri.toString();
+        Log.d(TAG, "buildUri: Uri built is "+uriString);
+
+        return uriString;
+    }
+
+    private void loadMovieData() {
+        if(isNetworkAvailable()){
+            getLoaderManager().initLoader(MOVIES_LOADER_ID,null,this);
+        }else{
+            showErrorMessage();
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            mEmptyTextView.setText(getString(R.string.no_internet));
+        }
+    }
+
+
+    private void showMovieData(){
+        mEmptyTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void showErrorMessage(){
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mEmptyTextView.setVisibility(View.VISIBLE);
+    }
+
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
+
 
 
 }
