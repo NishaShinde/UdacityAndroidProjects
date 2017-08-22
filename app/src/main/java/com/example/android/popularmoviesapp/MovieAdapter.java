@@ -23,7 +23,6 @@ import java.util.List;
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
-    private final Picasso mPicasso;
     private List<Movie> mMoviesList;
     private Context mContext;
     final private ItemClickListener mItemClickListener;
@@ -34,8 +33,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     public MovieAdapter(Context context, ItemClickListener mItemClickListener){
         mContext = context;
-        mPicasso = Picasso.with(mContext);
-        mMoviesList = new ArrayList<>();
+        mMoviesList = new ArrayList<Movie>();
         this.mItemClickListener = mItemClickListener;
     }
 
@@ -51,22 +49,21 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         Movie movie = mMoviesList.get(position);
         holder.bind(movie);
+        Log.d(TAG,"onBindViewHolder:#"+position);
     }
 
     @Override
     public int getItemCount() {
-        if(mMoviesList.isEmpty()){
-            return 0;
-        }
-        return mMoviesList.size();
+        return mMoviesList.isEmpty() ? 0 : mMoviesList.size();
     }
 
-    public void setMovieData(List<Movie> movie){
-        if(movie.isEmpty() || movie == null){
+    public void setMovieData(List<Movie> movies){
+
+        if(movies==null){
             return;
         }
         mMoviesList.clear();
-        mMoviesList.addAll(movie);
+        mMoviesList.addAll(movies);
         notifyDataSetChanged();
     }
 
@@ -90,8 +87,10 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
             String a11yMoviePoster = movie.getFormattedTitle();
 
             if(!TextUtils.isEmpty(poster)){
-                mPicasso.load(poster).into(mImageView);
+                Picasso.with(mContext).load(poster).into(mImageView);
                 mImageView.setContentDescription(a11yMoviePoster);
+                int x=0;
+                Log.d(TAG,"bind:#"+(x++)+movie.getTitle()+" completed.");
             }
         }
 

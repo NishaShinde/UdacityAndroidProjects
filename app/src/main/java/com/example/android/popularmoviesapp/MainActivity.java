@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.example.android.popularmoviesapp.Utils.NetworkUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>,SharedPreferences.OnSharedPreferenceChangeListener,MovieAdapter.ItemClickListener {
@@ -85,13 +84,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<List<Movie>>(this) {
 
-            List<Movie> movieList = new ArrayList<>();
+            List<Movie> movieList;
 
             @Override
             protected void onStartLoading() {
-                if(!movieList.isEmpty()){
+                if(movieList != null){
                     deliverResult(movieList);
-                }else {
+                }else{
                     mLoadingIndicator.setVisibility(View.VISIBLE);
                     forceLoad();
                 }
@@ -99,8 +98,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public void deliverResult(List<Movie> data) {
-                movieList.clear();
-                movieList.addAll(data);
+                List<Movie> oldData = movieList;
+                movieList = data;
+
                 super.deliverResult(data);
             }
 
@@ -111,9 +111,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if(uri == null){
                     return null;
                 }
-                List<Movie> movies = NetworkUtils.fetchPopularMovies(uri);
-                Log.d(TAG,"loadInBackground:"+movies.size());
-                return movies;
+                return NetworkUtils.fetchPopularMovies(uri);
             }
 
         };
@@ -121,13 +119,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-        mLoadingIndicator.setVisibility(View.GONE);
+
+        dismissLoadingIndicator();
 
         if(data!=null && !data.isEmpty()){
             mAdapter.setMovieData(data);
-            showMovieData();
+            Log.d(TAG,"onLoadFinished");
         }else {
-            Log.d(TAG,"Caught in No Movies found."+data+data.size());
+            Log.d(TAG,"Caught in No Movies found."+data.size());
             showErrorMessage();
             mEmptyTextView.setText(getString(R.string.no_movies));
         }
@@ -191,18 +190,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             getLoaderManager().initLoader(MOVIES_LOADER_ID,null,this);
         }else{
             showErrorMessage();
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
             mEmptyTextView.setText(getString(R.string.no_internet));
         }
     }
 
 
-    private void showMovieData(){
+    private void dismissLoadingIndicator(){
         mEmptyTextView.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        mLoadingIndicator.setVisibility(View.GONE);
     }
 
     private void showErrorMessage(){
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
         mEmptyTextView.setVisibility(View.VISIBLE);
     }
