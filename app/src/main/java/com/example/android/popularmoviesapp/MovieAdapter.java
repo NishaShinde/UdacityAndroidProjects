@@ -8,7 +8,6 @@ package com.example.android.popularmoviesapp;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         Movie movie = mMoviesList.get(position);
         holder.bind(movie);
-        Log.d(TAG,"onBindViewHolder:#"+position);
     }
 
     @Override
@@ -87,10 +85,11 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
             String a11yMoviePoster = movie.getFormattedTitle();
 
             if(!TextUtils.isEmpty(poster)){
-                Picasso.with(mContext).load(poster).into(mImageView);
+                Picasso.with(mContext)
+                        .load(poster)
+                        .placeholder(R.drawable.rectangle)
+                        .into(mImageView);
                 mImageView.setContentDescription(a11yMoviePoster);
-                int x=0;
-                Log.d(TAG,"bind:#"+(x++)+movie.getTitle()+" completed.");
             }
         }
 
@@ -98,7 +97,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
         public void onClick(View view) {
             int position = getAdapterPosition();
             Movie movie = mMoviesList.get(position);
-            Log.d(TAG,"onClick: Clicked on Movie"+movie.getTitle());
             mItemClickListener.onItemClick(movie);
         }
 
