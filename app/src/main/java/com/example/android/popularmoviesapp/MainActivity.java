@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.popularmoviesapp.Utils.NetworkUtils;
+import com.example.android.popularmoviesapp.Utils.SpacesItemDecoration;
 
 import java.util.List;
 
@@ -71,7 +72,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdapter = new MovieAdapter(this,this);
         mRecyclerView.setAdapter(mAdapter);
         attachSnapping();
+        addDivider();
         loadMovieData();
+    }
+
+    private void addDivider(){
+        SpacesItemDecoration spacesItemDecoration = new SpacesItemDecoration(4);
+        mRecyclerView.addItemDecoration(spacesItemDecoration);
     }
 
     /*
