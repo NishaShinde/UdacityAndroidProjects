@@ -16,7 +16,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,27 +44,44 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecyclerView mRecyclerView;
     private static final int NUM_OF_COLUMNS = 2;
+    private static final int DEFAULT_SCROLL_POSITION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.android.popularmoviesapp.R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.rv_movies);
         mEmptyTextView = (TextView)findViewById(R.id.emptyTextView);
         mLoadingIndicator = (ProgressBar)findViewById(R.id.loading_indicator);
 
+        initRecyclerView();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void initRecyclerView() {
+
+        mRecyclerView = (RecyclerView)findViewById(R.id.rv_movies);
         GridLayoutManager layoutManager = new GridLayoutManager(this,NUM_OF_COLUMNS);
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
         mAdapter = new MovieAdapter(this,this);
-
         mRecyclerView.setAdapter(mAdapter);
+        attachSnapping();
         loadMovieData();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    /*
+    * Helper method: attachSnapping() renders
+    * default snapping behaviour of snapping to center.
+     */
+
+    private void attachSnapping() {
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(mRecyclerView);
     }
 
     @Override
@@ -124,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if(data!=null && !data.isEmpty()){
             mAdapter.setMovieData(data);
-            Log.d(TAG,"onLoadFinished");
+            //After loading data, set the default scroll position.
+            mRecyclerView.scrollToPosition(DEFAULT_SCROLL_POSITION);
         }else {
             Log.d(TAG,"Caught in No Movies found."+data.size());
             showErrorMessage();
@@ -166,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent movieIntent = new Intent(MainActivity.this,DetailsActivity.class);
         movieIntent.putExtra(Intent.EXTRA_TEXT,movie);
         startActivity(movieIntent);
-        Log.d(TAG,"onItemClick: "+movie.getTitle());
     }
 
     private String buildUri(){
@@ -179,10 +198,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .appendQueryParameter(QUERY_API_KEY, BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
 
-        String uriString = builtUri.toString();
-        Log.d(TAG, "buildUri: Uri built is "+uriString);
-
-        return uriString;
+        return builtUri.toString();
     }
 
     private void loadMovieData() {
@@ -211,7 +227,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
-
-
-
 }
