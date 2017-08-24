@@ -8,113 +8,39 @@
         android:orientation="vertical"
         android:background="@android:color/black"
         android:id="@+id/scrollView">
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/llContainer"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/backdropImageView"
-                android:layout_width="0dp"
-                android:layout_height="250dp"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <ImageView
-                android:id="@+id/posterImageView"
-                android:layout_width="150dp"
-                android:layout_height="0dp"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_marginLeft="@dimen/activity_small_margin"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="@dimen/activity_medium_margin"
-                app:layout_constraintTop_toBottomOf="@+id/movieOverviewTextView"
-                android:layout_marginStart="@dimen/activity_small_margin" />
-
-            <TextView
-                android:id="@+id/movieNameTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Wonder Woman (2017)"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="@dimen/activity_small_margin"
-                android:layout_marginLeft="@dimen/activity_small_margin"
-                app:layout_constraintTop_toBottomOf="@+id/backdropImageView"
-                android:layout_marginStart="@dimen/activity_small_margin" />
+                android:scaleType="centerCrop"
+                tools:src="@drawable/wonder_woman_backdrop"
+                android:adjustViewBounds="true" />
 
-            <TextView
-                android:id="@+id/movieOverviewTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:textColor="@android:color/white"
-                tools:text="@string/wonder_woman_overview"
-                app:layout_constraintLeft_toLeftOf="@+id/movieNameTextView"
-                android:layout_marginTop="@dimen/activity_small_margin"
-                android:textAppearance="?android:textAppearance"
-                app:layout_constraintTop_toBottomOf="@+id/movieNameTextView" />
+            <include
+                layout="@layout/movie_info"
+                android:id="@+id/layout_movie_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <RatingBar
-                android:id="@+id/movieRatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numStars="1"
-                android:rating="1"
-                style="@style/Widget.AppCompat.RatingBar.Indicator"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/posterImageView"
-                android:layout_marginLeft="@dimen/activity_small_margin"
-                app:layout_constraintTop_toTopOf="@+id/posterImageView"
-                android:layout_marginBottom="@dimen/activity_small_margin"
-                app:layout_constraintHorizontal_bias="0.043"
-                android:layout_marginTop="32dp" />
+            <include
+                layout="@layout/trailers"
+                android:id="@+id/layout_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/movieRatingTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/wonder_woman_rating"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:textAppearanceMedium"
-                app:layout_constraintLeft_toRightOf="@+id/movieRatingBar"
-                android:layout_marginLeft="@dimen/activity_small_margin"
-                app:layout_constraintTop_toTopOf="@+id/movieRatingBar"
-                android:layout_marginTop="@dimen/activity_small_margin"
-                app:layout_constraintBottom_toBottomOf="@+id/movieRatingBar"
-                android:layout_marginBottom="@dimen/activity_small_margin"
-                android:layout_marginStart="@dimen/activity_small_margin" />
+            <include
+                layout="@layout/reviews"
+                android:id="@+id/layout_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/releaseDateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/wonder_woman_release_date"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="@dimen/activity_small_margin"
-                android:textAppearance="?android:textAppearanceMedium"
-                app:layout_constraintTop_toBottomOf="@+id/releaseDateLabel"
-                app:layout_constraintLeft_toLeftOf="@+id/releaseDateLabel" />
-
-            <TextView
-                android:id="@+id/releaseDateLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/release_date_label"
-                android:textAllCaps="true"
-                android:textAppearance="?android:textAppearance"
-                android:textColor="@android:color/darker_gray"
-                app:layout_constraintLeft_toLeftOf="@+id/movieRatingBar"
-                android:layout_marginTop="@dimen/activity_small_margin"
-                app:layout_constraintTop_toBottomOf="@+id/movieRatingBar" />
-
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
 
     </ScrollView>
 

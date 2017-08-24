@@ -2,7 +2,6 @@
  * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
  */
 
-
 package com.example.android.popularmoviesapp;
 
 import android.content.Context;
@@ -19,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
     private List<Movie> mMoviesList;
