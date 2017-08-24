@@ -73,6 +73,7 @@ public final class NetworkUtils {
             JSONArray results = baseJsonResponse.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject currentMovie = results.getJSONObject(i);
+                long _id = currentMovie.getInt("id");
                 String poster_path = currentMovie.getString("poster_path");
                 String backdrop_path = currentMovie.getString("backdrop_path");
                 String original_title = currentMovie.getString("original_title");
@@ -80,7 +81,7 @@ public final class NetworkUtils {
                 String rating = currentMovie.getString("vote_average");
                 String release_date = currentMovie.getString("release_date");
 
-                Movie movie = new Movie();
+                Movie movie = new Movie(_id);
                 movie.setPoster(poster_path);
                 movie.setBackdropPath(backdrop_path);
                 movie.setTitle(original_title);

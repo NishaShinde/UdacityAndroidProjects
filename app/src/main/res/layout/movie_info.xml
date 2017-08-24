@@ -1,89 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@android:color/background_dark">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_movie_name"
-        android:padding="4dp"
-        android:textColor="@android:color/white"
-        android:gravity="center_vertical"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        tools:text="Wonder Woman(2015)" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="4dp">
+        android:padding="16dp"
+        android:background="@android:color/background_dark">
 
         <TextView
-            android:id="@+id/tv_label_movie_release_date"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/tv_movie_name"
+            android:padding="4dp"
+            android:textColor="@android:color/white"
             android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="@string/release_date_label"
-            android:textColor="@android:color/white" />
+            android:textStyle="bold"
+            android:textSize="25sp"
+            tools:text="Wonder Woman(2015)" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tv_label_movie_release_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/release_date_label"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_movie_release_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_weight="3"
+                tools:text="@string/wonder_woman_release_date"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tv_label_movie_rating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Rating"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_movie_rating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                tools:text="@string/wonder_woman_rating"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_movie_release_date"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_weight="3"
-            tools:text="@string/wonder_woman_release_date"
-            android:textColor="@android:color/white" />
+            android:text="Summary"
+            android:padding="4dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_movie_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:padding="4dp"
+            tools:text="@string/wonder_woman_overview" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="4dp">
-
-        <TextView
-            android:id="@+id/tv_label_movie_rating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="Rating"
-            android:textColor="@android:color/white" />
-
-        <TextView
-            android:id="@+id/tv_movie_rating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            tools:text="@string/wonder_woman_rating"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/white" />
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Summary"
-        android:padding="4dp"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tv_movie_overview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:padding="4dp"
-        tools:text="@string/wonder_woman_overview" />
-
-</LinearLayout>
+</layout>

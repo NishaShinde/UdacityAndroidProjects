@@ -10,6 +10,7 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
+    private long _id;
     private String mPoster;
     private String mBackdropPath;
     private String mTitle;
@@ -31,6 +32,7 @@ public class Movie implements Parcelable {
     };
 
     private Movie(Parcel in){
+        _id = in.readLong();
         mPoster=in.readString();
         mBackdropPath=in.readString();
         mTitle=in.readString();
@@ -43,6 +45,10 @@ public class Movie implements Parcelable {
         // Default Constructor
     }
 
+    public Movie(long _id){
+        this._id = _id;
+    }
+
 
     @Override
     public int describeContents() {
@@ -51,6 +57,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(_id);
         dest.writeString(mPoster);
         dest.writeString(mBackdropPath);
         dest.writeString(mTitle);
@@ -107,10 +114,15 @@ public class Movie implements Parcelable {
         this.mReleaseDate = mReleaseDate;
     }
 
+    public long get_id(){
+        return _id;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
-                "mPoster='" + mPoster + '\'' +
+                "_id=" + _id +
+                ", mPoster='" + mPoster + '\'' +
                 ", mBackdropPath='" + mBackdropPath + '\'' +
                 ", mTitle='" + mTitle + '\'' +
                 ", mOverview='" + mOverview + '\'' +

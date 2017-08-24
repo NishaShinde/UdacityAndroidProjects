@@ -12,14 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.example.android.popularmoviesapp.Utils.NetworkUtils;
+import com.example.android.popularmoviesapp.Utils.PopularMoviesUtils;
 import com.example.android.popularmoviesapp.databinding.ActivityDetailsBinding;
 import com.squareup.picasso.Picasso;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -44,7 +39,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
             myMovie = intent.getParcelableExtra(Intent.EXTRA_TEXT);
-            //Log.d(TAG,"Clicked movie: "+myMovie.toString());
         }
 
         if(myMovie != null){
@@ -54,44 +48,23 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static void loadImage(ImageView view, String url,boolean isBackdrop) {
         String imageUrl = NetworkUtils.buildPosterPath(url,isBackdrop);
-        Picasso.with(view.getContext()).load(imageUrl).into(view);
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .placeholder(R.drawable.rectangle)
+                .into(view);
         }
 
-    private void displayMovieDetails(){
+    private void displayMovieDetails() {
 
-        loadImage(mBinding.posterImageView,myMovie.getPoster(),false);
-        loadImage(mBinding.backdropImageView,myMovie.getBackdropPath(),true);
+        loadImage(mBinding.backdropImageView, myMovie.getBackdropPath(), true);
 
         String movie = myMovie.getFormattedTitle();
-        mBinding.movieNameTextView.setText(movie);
 
-        mBinding.movieOverviewTextView.setText(myMovie.getOverview());
-        mBinding.movieRatingTextView.setText(formatRating(myMovie.getRating()));
-        mBinding.releaseDateTextView.setText(formatDate(myMovie.getReleaseDate()));
+        mBinding.layoutMovieInfo.tvMovieName.setText(movie);
+        mBinding.layoutMovieInfo.tvMovieOverview.setText(myMovie.getOverview());
+        mBinding.layoutMovieInfo.tvMovieRating.setText(PopularMoviesUtils.formatRating(myMovie.getRating()));
+        mBinding.layoutMovieInfo.tvMovieReleaseDate.setText(PopularMoviesUtils.formatReleaseDate(myMovie.getReleaseDate()));
 
-        /*
-          Added Content Descriptions for poster and backdrop image views
-         */
-        mBinding.posterImageView.setContentDescription("Poster of "+movie);
-        mBinding.backdropImageView.setContentDescription("Backdrop of "+movie);
+        mBinding.backdropImageView.setContentDescription("Backdrop of " + movie);
     }
-
-    private String formatDate(String date){
-        DateFormat parser = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        DateFormat formatter = new SimpleDateFormat("d MMM yyyy",Locale.getDefault());
-        try {
-            Date convertedDate = parser.parse(date);
-            return formatter.format(convertedDate);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private String formatRating(float rating){
-        return Float.toString(rating) +
-                " / 10";
-    }
-
 }
