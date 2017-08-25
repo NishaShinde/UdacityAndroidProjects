@@ -57,14 +57,13 @@ public class DetailsActivity extends AppCompatActivity {
     private void displayMovieDetails() {
 
         loadImage(mBinding.backdropImageView, myMovie.getBackdropPath(), true);
-
         String movie = myMovie.getFormattedTitle();
+        mBinding.backdropImageView.setContentDescription("Backdrop image of " + movie);
 
         mBinding.layoutMovieInfo.tvMovieName.setText(movie);
         mBinding.layoutMovieInfo.tvMovieOverview.setText(myMovie.getOverview());
         mBinding.layoutMovieInfo.tvMovieRating.setText(PopularMoviesUtils.formatRating(myMovie.getRating()));
         mBinding.layoutMovieInfo.tvMovieReleaseDate.setText(PopularMoviesUtils.formatReleaseDate(myMovie.getReleaseDate()));
 
-        mBinding.backdropImageView.setContentDescription("Backdrop of " + movie);
     }
 }

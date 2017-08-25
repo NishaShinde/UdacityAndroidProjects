@@ -6,15 +6,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:background="@android:color/background_dark">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_movie_name"
             android:padding="4dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimaryText"
             android:gravity="center_vertical"
             android:textStyle="bold"
             android:textSize="25sp"
@@ -33,7 +32,7 @@
                 android:gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="@string/release_date_label"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorSecondaryText" />
 
             <TextView
                 android:id="@+id/tv_movie_release_date"
@@ -42,7 +41,7 @@
                 android:gravity="center_vertical"
                 android:layout_weight="3"
                 tools:text="@string/wonder_woman_release_date"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorPrimaryText" />
 
         </LinearLayout>
 
@@ -59,7 +58,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="Rating"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorSecondaryText" />
 
             <TextView
                 android:id="@+id/tv_movie_rating"
@@ -68,7 +67,7 @@
                 android:layout_weight="3"
                 tools:text="@string/wonder_woman_rating"
                 android:gravity="center_vertical"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorPrimaryText" />
 
         </LinearLayout>
 
@@ -77,14 +76,14 @@
             android:layout_height="wrap_content"
             android:text="Summary"
             android:padding="4dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorSecondaryText"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_movie_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimaryText"
             android:padding="4dp"
             tools:text="@string/wonder_woman_overview" />
 
