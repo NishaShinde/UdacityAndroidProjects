@@ -6,6 +6,7 @@
 package com.example.android.popularmoviesapp.Utils;
 
 import android.net.Uri;
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -23,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public final class NetworkUtils {
@@ -30,10 +32,31 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
+    private static final String YOUTUBE_BASE_URL = "http://www.youtube.com/watch";
     private static final String POSTER_IMAGE_SIZE  = "w185";
     private static final String BACKDROP_IMAGE_SIZE="w500";
 
+    public static final String TRAILERS = "trailers";
+    public static final String REVIEWS = "reviews";
+
     private NetworkUtils(){}
+
+    public static Uri buildYouTubeAppUri(String key){
+        if(TextUtils.isEmpty(key)) return null;
+
+        return Uri.parse("vnd.youtube:"+key);
+    }
+
+    public static Uri buildYouTubeWebUri(String key){
+        if(TextUtils.isEmpty(key)) return null;
+
+        Uri result = null;
+
+        result = Uri.parse(YOUTUBE_BASE_URL).buildUpon()
+                .appendQueryParameter("v",key).build();
+
+        return result;
+    }
 
     public static String buildPosterPath(String poster,boolean isBackdrop){
         String result = null;
@@ -49,22 +72,17 @@ public final class NetworkUtils {
     }
 
     public static List<Movie> fetchPopularMovies(String requestUrl){
-        URL url = createUrl(requestUrl);
-        String jsonResponse = "";
 
-        try {
-            jsonResponse = makeHttpRequest(url);
-        }catch (IOException io){
-            Log.e(TAG, "fetchPopularMovies: Exception caught in making HTTP request");
+        String jsonResponse = getJsonResponse(requestUrl);
+
+        if(TextUtils.isEmpty(jsonResponse)){
+            throw new IllegalArgumentException("Empty json Response obtained for URL: " + requestUrl);
         }
 
         return extractMoviesFromJson(jsonResponse);
     }
 
     private static List<Movie> extractMoviesFromJson(String response){
-        if(TextUtils.isEmpty(response)){
-            return null;
-        }
 
         List<Movie> movies = new ArrayList<>();
 
@@ -141,4 +159,80 @@ public final class NetworkUtils {
         }
         return output.toString();
     }
+
+     private static String getJsonResponse(String requestUrl){
+         URL url = createUrl(requestUrl);
+         String jsonResponse = "";
+
+         try {
+             jsonResponse = makeHttpRequest(url);
+         }catch (IOException io){
+             Log.e(TAG, "getJsonResponse: Exception caught in making HTTP request for URL:"+requestUrl);
+         }
+         return jsonResponse;
+
+     }
+
+    public static ArrayMap<String,LinkedHashMap<String,String>> getTrailersAndReviews(String requestUrl){
+
+        String jsonResponse = getJsonResponse(requestUrl);
+
+        if(TextUtils.isEmpty(jsonResponse)){
+            throw new IllegalArgumentException("Empty json Response obtained for URL: " + requestUrl);
+        }
+
+        ArrayMap<String,LinkedHashMap<String,String>> results = new ArrayMap<>(2);
+
+        LinkedHashMap<String,String> trailers = extractTrailersFromResponse(jsonResponse);
+        LinkedHashMap<String,String> reviews = extractReviewsFromResponse(jsonResponse);
+
+        results.put(TRAILERS,trailers);
+        results.put(REVIEWS,reviews);
+
+        return results;
+    }
+
+    private static LinkedHashMap<String,String> extractReviewsFromResponse(String jsonResponse) {
+
+        LinkedHashMap<String,String> reviewsMap = new LinkedHashMap<>();
+
+        try{
+            JSONObject baseJsonResponse = new JSONObject(jsonResponse);
+            JSONArray reviews = baseJsonResponse.getJSONArray("reviews");
+            JSONArray results = reviews.getJSONArray(0);
+            for (int i=0;i<results.length();i++){
+                JSONObject review = results.getJSONObject(i);
+                String author = review.getString("author");
+                JSONArray contentArray = review.getJSONArray("content");
+                String content = contentArray.getString(0);
+                reviewsMap.put(author,content);
+                }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return reviewsMap;
+    }
+
+    private static LinkedHashMap<String,String> extractTrailersFromResponse(String jsonResponse) {
+
+        LinkedHashMap<String,String> trailers = new LinkedHashMap<>();
+
+        try{
+            JSONObject baseJsonResponse = new JSONObject(jsonResponse);
+            JSONArray videos = baseJsonResponse.getJSONArray("videos");
+            JSONArray results = videos.getJSONArray(0);
+            for (int i=0;i<results.length();i++){
+                JSONObject trailer = results.getJSONObject(i);
+                String key = trailer.getString("key");
+                String name = trailer.getString("name");
+                trailers.put(key,name);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return trailers;
+    }
+
 }

@@ -22,5 +22,8 @@
     <string name="sort_by_popularity" translatable="false">popular</string>
     <string name="sort_by_rating" translatable="false">top_rated</string>
 
-    <string name="movie_dp_api">https://api.themoviedb.org/3/movie</string>
+    <string name="movie_dp_api" translatable="false">https://api.themoviedb.org/3/movie</string>
+    <string name="query_api_key" translatable="false">api_key</string>
+    <string name="query_append_to_response" translatable="false">append_to_response</string>
+    <string name="literals_for_videos_reviews" translatable="false">videos,reviews</string>
 </resources>

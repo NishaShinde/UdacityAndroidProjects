@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    android:minHeight="?android:attr/listPreferredItemHeight">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_review_author"
+        android:padding="8dp"
+        tools:text="Author Name"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorPrimaryText"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_review_content"
+        android:padding="8dp"
+        tools:text="My Review...."
+        android:gravity="center_vertical"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorSecondaryText"/>
 
 </LinearLayout>

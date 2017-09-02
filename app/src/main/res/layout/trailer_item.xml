@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="16dp"
+    android:minHeight="?android:attr/listPreferredItemHeight">
 
-    <VideoView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/vv_trailers"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_trailer_name"
+        android:gravity="center_vertical"
+        tools:text="Play Trailer 1"
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorSecondaryText"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
 
-</FrameLayout>
+</RelativeLayout>
