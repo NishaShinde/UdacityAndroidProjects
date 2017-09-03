@@ -17,11 +17,29 @@
             android:textColor="@color/colorPrimaryText"
             style="@style/TextAppearance.AppCompat.Large"/>
 
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_trailers">
-        </android.support.v7.widget.RecyclerView>
+            android:id="@+id/frameLayoutForTrailers">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_trailers">
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_empty_trailers"
+                tools:text="No Trailers Found."
+                android:visibility="gone"
+                android:gravity="center|center_vertical"
+                android:textColor="@color/colorPrimaryText"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        </FrameLayout>
+
 
     </LinearLayout>
 </layout>

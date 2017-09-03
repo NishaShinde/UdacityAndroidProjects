@@ -17,7 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.android.popularmoviesapp.BuildConfig;
 import com.example.android.popularmoviesapp.controller.HeterogenousMovieAdapter;
@@ -46,6 +48,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private HeterogenousMovieAdapter mReviewsAdapter;
     private RecyclerView mTrailersRecyclerView;
     private RecyclerView mReviewsRecyclerView;
+    private TextView mEmptyTrailerTextView;
+    private TextView mEmptyReviewTextView;
 
     private Movie myMovie;
 
@@ -70,6 +74,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         mTrailersAdapter = new HeterogenousMovieAdapter(this,this,new ArrayList());
         mReviewsAdapter = new HeterogenousMovieAdapter(this,this,new ArrayList());
+
+        mEmptyTrailerTextView = (TextView)findViewById(R.id.tv_empty_trailers);
+        mEmptyReviewTextView = (TextView) findViewById(R.id.tv_empty_reviews);
 
         initTrailerRecyclerView(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false),mTrailersAdapter);
         initReviewRecyclerView(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false),mReviewsAdapter);
@@ -122,7 +129,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 .load(imageUrl)
                 .placeholder(R.drawable.rectangle)
                 .into(view);
-        }
+    }
 
     private void displayMovieDetails() {
 
@@ -168,6 +175,28 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         };
     }
 
+    private void showTrailers(){
+        mTrailersRecyclerView.setVisibility(View.VISIBLE);
+        mEmptyTrailerTextView.setVisibility(View.GONE);
+    }
+
+    private void showNoTrailers(){
+        mTrailersRecyclerView.setVisibility(View.GONE);
+        mEmptyTrailerTextView.setText(getString(R.string.no_trailers));
+        mEmptyTrailerTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void showReviews(){
+        mReviewsRecyclerView.setVisibility(View.VISIBLE);
+        mEmptyReviewTextView.setVisibility(View.GONE);
+    }
+
+    private void showNoReviews(){
+        mReviewsRecyclerView.setVisibility(View.GONE);
+        mEmptyReviewTextView.setText(getString(R.string.no_reviews));
+        mEmptyReviewTextView.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onLoadFinished(Loader<ArrayMap<String,List>> loader, ArrayMap<String, List> data) {
 
@@ -178,14 +207,19 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         List<Trailer> trailers = data.get(NetworkUtils.TRAILERS);
         List<Review> reviews = data.get(NetworkUtils.REVIEWS);
 
-        mTrailersAdapter.swapData(trailers);
-        mReviewsAdapter.swapData(reviews);
+        if(trailers == null || trailers.size() == 0){
+            showNoTrailers();
+        }else{
+            mTrailersAdapter.swapData(trailers);
+            showTrailers();
+        }
 
-        //List<Object> trailersAndReviews = new ArrayList<>();
-        //trailersAndReviews.addAll(trailers);
-        //trailersAndReviews.addAll(reviews);
-
-        //mAdapter.swapData(trailersAndReviews);
+        if(reviews == null || reviews.size() == 0){
+            showNoReviews();
+        }else {
+            mReviewsAdapter.swapData(reviews);
+            showReviews();
+        }
     }
 
     @Override
