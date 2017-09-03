@@ -1,5 +1,9 @@
 package com.example.android.popularmoviesapp.utils;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +32,17 @@ public final class PopularMoviesUtils {
     public static String formatRating(float rating){
         return Float.toString(rating) +
                 " / 10";
+    }
+
+    public static void watchYouTubeVideo(Context context,String trailerKey) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW,NetworkUtils.buildYouTubeAppUri(trailerKey));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,NetworkUtils.buildYouTubeWebUri(trailerKey));
+
+        try{
+            context.startActivity(appIntent);
+        }catch (ActivityNotFoundException ex){
+            context.startActivity(webIntent);
+        }
     }
 
 }

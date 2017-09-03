@@ -4,7 +4,6 @@
 
 package com.example.android.popularmoviesapp.view;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -22,14 +21,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.popularmoviesapp.BuildConfig;
-import com.example.android.popularmoviesapp.controller.HeterogenousMovieAdapter;
 import com.example.android.popularmoviesapp.R;
-import com.example.android.popularmoviesapp.utils.NetworkUtils;
-import com.example.android.popularmoviesapp.utils.PopularMoviesUtils;
+import com.example.android.popularmoviesapp.controller.HeterogenousMovieAdapter;
 import com.example.android.popularmoviesapp.databinding.ActivityDetailsBinding;
 import com.example.android.popularmoviesapp.model.Movie;
 import com.example.android.popularmoviesapp.model.Review;
 import com.example.android.popularmoviesapp.model.Trailer;
+import com.example.android.popularmoviesapp.utils.NetworkUtils;
+import com.example.android.popularmoviesapp.utils.PopularMoviesUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -228,17 +227,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mReviewsAdapter.swapData(null);
     }
 
-    private void watchYouTubeVideo(String trailerKey) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW,NetworkUtils.buildYouTubeAppUri(trailerKey));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,NetworkUtils.buildYouTubeWebUri(trailerKey));
-
-        try{
-            startActivity(appIntent);
-        }catch (ActivityNotFoundException ex){
-            startActivity(webIntent);
-        }
-    }
-
     @Override
     public void onItemClick(Object item) {
         if(item == null) return;
@@ -246,7 +234,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         if(item instanceof Trailer){
             Trailer trailer = (Trailer) item;
             String key = trailer.getKey();
-            watchYouTubeVideo(key);
+            PopularMoviesUtils.watchYouTubeVideo(this,key);
         }
     }
 }
