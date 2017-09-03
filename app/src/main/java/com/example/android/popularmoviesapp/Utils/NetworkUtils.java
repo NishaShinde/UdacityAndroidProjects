@@ -198,13 +198,12 @@ public final class NetworkUtils {
 
         try{
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
-            JSONArray reviews = baseJsonResponse.getJSONArray("reviews");
-            JSONArray results = reviews.getJSONArray(0);
+            JSONObject reviews = baseJsonResponse.getJSONObject("reviews");
+            JSONArray results = reviews.getJSONArray("results");
             for (int i=0;i<results.length();i++){
                 JSONObject review = results.getJSONObject(i);
                 String author = review.getString("author");
-                JSONArray contentArray = review.getJSONArray("content");
-                String content = contentArray.getString(0);
+                String content = review.getString("content");
                 reviewsMap.put(author,content);
                 }
         } catch (JSONException e) {
@@ -220,8 +219,8 @@ public final class NetworkUtils {
 
         try{
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
-            JSONArray videos = baseJsonResponse.getJSONArray("videos");
-            JSONArray results = videos.getJSONArray(0);
+            JSONObject videos = baseJsonResponse.getJSONObject("videos");
+            JSONArray results = videos.getJSONArray("results");
             for (int i=0;i<results.length();i++){
                 JSONObject trailer = results.getJSONObject(i);
                 String key = trailer.getString("key");

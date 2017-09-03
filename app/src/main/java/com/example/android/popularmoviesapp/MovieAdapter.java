@@ -21,6 +21,7 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
+
     private List<Movie> mMoviesList;
     private Context mContext;
     final private ItemClickListener mItemClickListener;
@@ -40,8 +41,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.grid_movie_item,parent,false);
         MovieViewHolder viewHolder = new MovieViewHolder(view);
+
         return viewHolder;
-    }
+
+        }
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
@@ -51,7 +54,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public int getItemCount() {
-        return mMoviesList.isEmpty() ? 0 : mMoviesList.size();
+        return mMoviesList.size();
     }
 
     public void setMovieData(List<Movie> movies){

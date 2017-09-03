@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final int MOVIES_LOADER_ID=0;
     private static boolean PREFERENCES_HAVE_BEEN_CHANGED;
-    private static final String QUERY_API_KEY = "api_key";
 
     private MovieAdapter mAdapter;
     private TextView mEmptyTextView;
@@ -71,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mAdapter = new MovieAdapter(this,this);
         mRecyclerView.setAdapter(mAdapter);
-        attachSnapping();
-        addDivider();
+        //attachSnapping();
+        //addDivider();
         loadMovieData();
     }
 
@@ -186,15 +185,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         PREFERENCES_HAVE_BEEN_CHANGED=true;
     }
 
-    @Override
-    public void onItemClick(Movie movie) {
-        if(movie == null) return;
-
-        Intent movieIntent = new Intent(MainActivity.this,DetailsActivity.class);
-        movieIntent.putExtra(Intent.EXTRA_TEXT,movie);
-        startActivity(movieIntent);
-    }
-
     private String buildUri(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String sortKey = getString(R.string.sort_by_key);
@@ -202,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String sortType=sharedPreferences.getString(sortKey,defaultSort);
         Uri builtUri = Uri.parse(getString(R.string.movie_dp_api)).buildUpon()
                 .appendPath(sortType)
-                .appendQueryParameter(QUERY_API_KEY, BuildConfig.THE_MOVIE_DB_API_KEY)
+                .appendQueryParameter(getString(R.string.query_api_key), BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
 
         return builtUri.toString();
@@ -216,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mEmptyTextView.setText(getString(R.string.no_internet));
         }
     }
-
 
     private void dismissLoadingIndicator(){
         mEmptyTextView.setVisibility(View.INVISIBLE);
@@ -233,5 +222,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+
+    @Override
+    public void onItemClick(Movie movie) {
+        Intent movieIntent = new Intent(MainActivity.this,DetailsActivity.class);
+        movieIntent.putExtra(Intent.EXTRA_TEXT,movie);
+        startActivity(movieIntent);
     }
 }
