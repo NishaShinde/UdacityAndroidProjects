@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
  */
 
-package com.example.android.popularmoviesapp;
+package com.example.android.popularmoviesapp.view;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -19,24 +19,31 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
-import com.example.android.popularmoviesapp.Utils.NetworkUtils;
-import com.example.android.popularmoviesapp.Utils.PopularMoviesUtils;
+import com.example.android.popularmoviesapp.BuildConfig;
+import com.example.android.popularmoviesapp.controller.HeterogenousMovieAdapter;
+import com.example.android.popularmoviesapp.R;
+import com.example.android.popularmoviesapp.utils.NetworkUtils;
+import com.example.android.popularmoviesapp.utils.PopularMoviesUtils;
 import com.example.android.popularmoviesapp.databinding.ActivityDetailsBinding;
+import com.example.android.popularmoviesapp.model.Movie;
+import com.example.android.popularmoviesapp.model.Review;
+import com.example.android.popularmoviesapp.model.Trailer;
 import com.squareup.picasso.Picasso;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayMap<String,LinkedHashMap<String,String>>>,TrailerAdapter.OnTrailerClickListener {
+public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayMap<String,List>>,HeterogenousMovieAdapter.MovieItemClickListener {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
     private ActivityDetailsBinding mBinding;
-    private TrailerAdapter mTrailerAdapter;
-    private ReviewAdapter mReviewAdapter;
+    private HeterogenousMovieAdapter mTrailersAdapter;
+    private HeterogenousMovieAdapter mReviewsAdapter;
     private RecyclerView mTrailersRecyclerView;
     private RecyclerView mReviewsRecyclerView;
 
@@ -61,8 +68,11 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             throw new NullPointerException("Null Movie found from intent");
         }
 
-        initTrailerRecyclerView(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
-        initReviewRecyclerView(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
+        mTrailersAdapter = new HeterogenousMovieAdapter(this,this,new ArrayList());
+        mReviewsAdapter = new HeterogenousMovieAdapter(this,this,new ArrayList());
+
+        initTrailerRecyclerView(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false),mTrailersAdapter);
+        initReviewRecyclerView(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false),mReviewsAdapter);
         displayMovieDetails();
         getSupportLoaderManager().initLoader(DETAILS_LOADER_ID,null,this);
     }
@@ -78,21 +88,19 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         return decorator;
     }
 
-    private void initTrailerRecyclerView(RecyclerView.LayoutManager layoutManager){
+    private void initTrailerRecyclerView(RecyclerView.LayoutManager layoutManager, HeterogenousMovieAdapter adapter){
         mTrailersRecyclerView = (RecyclerView)findViewById(R.id.rv_trailers);
         mTrailersRecyclerView.setLayoutManager(layoutManager);
         mTrailersRecyclerView.setHasFixedSize(true);
-        mTrailerAdapter = new TrailerAdapter(this,this);
-        mTrailersRecyclerView.setAdapter(mTrailerAdapter);
+        mTrailersRecyclerView.setAdapter(adapter);
         mTrailersRecyclerView.addItemDecoration(addDivider());
     }
 
-    private void initReviewRecyclerView(RecyclerView.LayoutManager layoutManager){
+    private void initReviewRecyclerView(RecyclerView.LayoutManager layoutManager,HeterogenousMovieAdapter adapter){
         mReviewsRecyclerView = (RecyclerView)findViewById(R.id.rv_reviews);
         mReviewsRecyclerView.setLayoutManager(layoutManager);
         mReviewsRecyclerView.setHasFixedSize(true);
-        mReviewAdapter = new ReviewAdapter(this);
-        mReviewsRecyclerView.setAdapter(mReviewAdapter);
+        mReviewsRecyclerView.setAdapter(adapter);
         mReviewsRecyclerView.addItemDecoration(addDivider());
     }
 
@@ -130,9 +138,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public Loader<ArrayMap<String, LinkedHashMap<String, String>>> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<ArrayMap<String, LinkedHashMap<String, String>>>(this) {
-            ArrayMap<String,LinkedHashMap<String,String>> trailersReviews;
+    public Loader<ArrayMap<String, List>> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<ArrayMap<String, List>>(this) {
+            ArrayMap<String,List> trailersReviews;
 
             @Override
             protected void onStartLoading() {
@@ -144,14 +152,14 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
 
             @Override
-            public void deliverResult(ArrayMap<String, LinkedHashMap<String, String>> data) {
-                ArrayMap<String,LinkedHashMap<String,String>> oldMap = trailersReviews;
+            public void deliverResult(ArrayMap<String, List> data) {
+                ArrayMap<String,List> old = trailersReviews;
                 trailersReviews = data;
                 super.deliverResult(data);
             }
 
             @Override
-            public ArrayMap<String, LinkedHashMap<String, String>> loadInBackground() {
+            public ArrayMap<String, List> loadInBackground() {
 
                 long _id = myMovie.get_id();
                 String requestString = createUriForMovieDetails(_id);
@@ -161,28 +169,29 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public void onLoadFinished(Loader<ArrayMap<String, LinkedHashMap<String, String>>> loader, ArrayMap<String, LinkedHashMap<String, String>> data) {
+    public void onLoadFinished(Loader<ArrayMap<String,List>> loader, ArrayMap<String, List> data) {
 
         if(data==null || data.isEmpty()){
             throw new IllegalArgumentException("Null or Empty map retrieved.");
         }
 
-        LinkedHashMap<String,String> trailers = data.get(NetworkUtils.TRAILERS);
-        LinkedHashMap<String,String> reviews = data.get(NetworkUtils.REVIEWS);
+        List<Trailer> trailers = data.get(NetworkUtils.TRAILERS);
+        List<Review> reviews = data.get(NetworkUtils.REVIEWS);
 
-        mReviewAdapter.setReviewData(reviews);
-        mTrailerAdapter.setTrailersData(trailers);
+        mTrailersAdapter.swapData(trailers);
+        mReviewsAdapter.swapData(reviews);
+
+        //List<Object> trailersAndReviews = new ArrayList<>();
+        //trailersAndReviews.addAll(trailers);
+        //trailersAndReviews.addAll(reviews);
+
+        //mAdapter.swapData(trailersAndReviews);
     }
 
     @Override
-    public void onLoaderReset(Loader<ArrayMap<String, LinkedHashMap<String, String>>> loader) {
-        mTrailerAdapter.setTrailersData(null);
-        mReviewAdapter.setReviewData(null);
-    }
-
-    @Override
-    public void onTrailerClick(String key) {
-        watchYouTubeVideo(key);
+    public void onLoaderReset(Loader<ArrayMap<String,List>> loader) {
+        mTrailersAdapter.swapData(null);
+        mReviewsAdapter.swapData(null);
     }
 
     private void watchYouTubeVideo(String trailerKey) {
@@ -196,4 +205,14 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
+    @Override
+    public void onItemClick(Object item) {
+        if(item == null) return;
+
+        if(item instanceof Trailer){
+            Trailer trailer = (Trailer) item;
+            String key = trailer.getKey();
+            watchYouTubeVideo(key);
+        }
+    }
 }

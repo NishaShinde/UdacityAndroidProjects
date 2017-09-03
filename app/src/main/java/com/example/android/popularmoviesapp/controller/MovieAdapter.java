@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
  */
 
-package com.example.android.popularmoviesapp;
+package com.example.android.popularmoviesapp.controller;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.android.popularmoviesapp.Utils.NetworkUtils;
+import com.example.android.popularmoviesapp.R;
+import com.example.android.popularmoviesapp.utils.NetworkUtils;
+import com.example.android.popularmoviesapp.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

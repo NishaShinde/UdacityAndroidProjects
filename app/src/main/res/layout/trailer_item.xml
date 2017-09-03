@@ -4,19 +4,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="16dp"
-    android:minHeight="?android:attr/listPreferredItemHeight">
+    android:paddingTop="8dp"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:baselineAligned="false">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_trailer_name"
+        android:padding="16dp"
+        android:textSize="18sp"
         android:gravity="center_vertical"
         tools:text="Play Trailer 1"
-        android:padding="8dp"
-        android:textSize="20sp"
-        android:textColor="@color/colorSecondaryText"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/colorPrimaryText"
         />
 
 </LinearLayout>

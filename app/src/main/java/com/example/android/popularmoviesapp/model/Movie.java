@@ -3,7 +3,7 @@
  */
 
 
-package com.example.android.popularmoviesapp;
+package com.example.android.popularmoviesapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

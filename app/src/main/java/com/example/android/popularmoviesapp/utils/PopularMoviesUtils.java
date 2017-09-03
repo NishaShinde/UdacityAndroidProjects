@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesapp.Utils;
+package com.example.android.popularmoviesapp.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;

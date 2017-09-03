@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesapp.Utils;
+package com.example.android.popularmoviesapp.utils;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

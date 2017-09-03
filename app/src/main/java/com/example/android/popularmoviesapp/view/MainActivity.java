@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017 Udacity Android Nanodegree Popular Movies Project
  */
-package com.example.android.popularmoviesapp;
+package com.example.android.popularmoviesapp.view;
 
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
@@ -26,19 +26,25 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.android.popularmoviesapp.Utils.NetworkUtils;
-import com.example.android.popularmoviesapp.Utils.SpacesItemDecoration;
+import com.example.android.popularmoviesapp.BuildConfig;
+import com.example.android.popularmoviesapp.controller.HeterogenousMovieAdapter;
+import com.example.android.popularmoviesapp.R;
+import com.example.android.popularmoviesapp.utils.NetworkUtils;
+import com.example.android.popularmoviesapp.utils.SpacesItemDecoration;
+import com.example.android.popularmoviesapp.model.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>,SharedPreferences.OnSharedPreferenceChangeListener,MovieAdapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List>,SharedPreferences.OnSharedPreferenceChangeListener,HeterogenousMovieAdapter.MovieItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int MOVIES_LOADER_ID=0;
     private static boolean PREFERENCES_HAVE_BEEN_CHANGED;
 
-    private MovieAdapter mAdapter;
+    private HeterogenousMovieAdapter mAdapter;
+    //private MovieAdapter mAdapter;
     private TextView mEmptyTextView;
     private ProgressBar mLoadingIndicator;
 
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new MovieAdapter(this,this);
+        mAdapter = new HeterogenousMovieAdapter(this,this,new ArrayList());
         mRecyclerView.setAdapter(mAdapter);
         //attachSnapping();
         //addDivider();
@@ -106,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<List<Movie>>(this) {
+    public Loader<List> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<List>(this) {
 
             List<Movie> movieList;
 
@@ -122,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             @Override
-            public void deliverResult(List<Movie> data) {
+            public void deliverResult(List data) {
                 List<Movie> oldData = movieList;
                 movieList = data;
 
@@ -130,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             @Override
-            public List<Movie> loadInBackground() {
+            public List loadInBackground() {
                 String uri = buildUri();
 
                 if(uri == null){
@@ -143,12 +149,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+    public void onLoadFinished(Loader<List> loader, List data) {
 
         dismissLoadingIndicator();
 
         if(data!=null && !data.isEmpty()){
-            mAdapter.setMovieData(data);
+            mAdapter.swapData(data);
             //After loading data, set the default scroll position.
             mRecyclerView.scrollToPosition(DEFAULT_SCROLL_POSITION);
         }else {
@@ -159,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Movie>> loader) {
-        mAdapter.setMovieData(null);
+    public void onLoaderReset(Loader<List> loader) {
+        mAdapter.swapData(null);
     }
 
     @Override
@@ -224,11 +230,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-
     @Override
-    public void onItemClick(Movie movie) {
-        Intent movieIntent = new Intent(MainActivity.this,DetailsActivity.class);
-        movieIntent.putExtra(Intent.EXTRA_TEXT,movie);
-        startActivity(movieIntent);
+    public void onItemClick(Object item) {
+        if(item == null) return;
+
+        if(item instanceof Movie){
+            Movie movie = (Movie) item;
+            Intent movieIntent = new Intent(MainActivity.this,DetailsActivity.class);
+            movieIntent.putExtra(Intent.EXTRA_TEXT,movie);
+            startActivity(movieIntent);
+        }
+
     }
 }

@@ -3,14 +3,16 @@
  */
 
 
-package com.example.android.popularmoviesapp.Utils;
+package com.example.android.popularmoviesapp.utils;
 
 import android.net.Uri;
 import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.android.popularmoviesapp.Movie;
+import com.example.android.popularmoviesapp.model.Movie;
+import com.example.android.popularmoviesapp.model.Review;
+import com.example.android.popularmoviesapp.model.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +26,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public final class NetworkUtils {
@@ -173,7 +174,7 @@ public final class NetworkUtils {
 
      }
 
-    public static ArrayMap<String,LinkedHashMap<String,String>> getTrailersAndReviews(String requestUrl){
+    public static ArrayMap<String,List> getTrailersAndReviews(String requestUrl){
 
         String jsonResponse = getJsonResponse(requestUrl);
 
@@ -181,10 +182,10 @@ public final class NetworkUtils {
             throw new IllegalArgumentException("Empty json Response obtained for URL: " + requestUrl);
         }
 
-        ArrayMap<String,LinkedHashMap<String,String>> results = new ArrayMap<>(2);
+        ArrayMap<String,List> results = new ArrayMap<>(2);
 
-        LinkedHashMap<String,String> trailers = extractTrailersFromResponse(jsonResponse);
-        LinkedHashMap<String,String> reviews = extractReviewsFromResponse(jsonResponse);
+        List<Trailer> trailers = extractTrailersFromResponse(jsonResponse);
+        List<Review> reviews = extractReviewsFromResponse(jsonResponse);
 
         results.put(TRAILERS,trailers);
         results.put(REVIEWS,reviews);
@@ -192,9 +193,9 @@ public final class NetworkUtils {
         return results;
     }
 
-    private static LinkedHashMap<String,String> extractReviewsFromResponse(String jsonResponse) {
+    private static List<Review> extractReviewsFromResponse(String jsonResponse) {
 
-        LinkedHashMap<String,String> reviewsMap = new LinkedHashMap<>();
+        List<Review> reviewsList = new ArrayList<>();
 
         try{
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
@@ -204,18 +205,17 @@ public final class NetworkUtils {
                 JSONObject review = results.getJSONObject(i);
                 String author = review.getString("author");
                 String content = review.getString("content");
-                reviewsMap.put(author,content);
-                }
+                reviewsList.add(new Review(author,content));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return reviewsMap;
+        return reviewsList;
     }
 
-    private static LinkedHashMap<String,String> extractTrailersFromResponse(String jsonResponse) {
+    private static List<Trailer> extractTrailersFromResponse(String jsonResponse) {
 
-        LinkedHashMap<String,String> trailers = new LinkedHashMap<>();
+        List<Trailer> trailerList = new ArrayList<>();
 
         try{
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
@@ -225,13 +225,13 @@ public final class NetworkUtils {
                 JSONObject trailer = results.getJSONObject(i);
                 String key = trailer.getString("key");
                 String name = trailer.getString("name");
-                trailers.put(key,name);
+                trailerList.add(new Trailer(key,name));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return trailers;
+        return trailerList;
     }
 
 }
