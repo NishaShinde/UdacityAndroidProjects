@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PopMoviesDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movies.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public PopMoviesDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,9 +36,9 @@ public class PopMoviesDbHelper extends SQLiteOpenHelper {
         final String CREATE_TABLE_TRAILERS =
                 "CREATE TABLE " + PopMoviesContract.TrailerEntry.TABLE_NAME + " ( " +
                         //PopMoviesContract.TrailerEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
-                        PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + " INTEGER FOREIGN KEY NOT NULL, " +
-                        PopMoviesContract.TrailerEntry.COLUMN_TRAILER_KEY + " TEXT NOT NULL, " +
-                        PopMoviesContract.TrailerEntry.COLUMN_TRAILER_NAME + " TEXT NOT NULL, " +
+                        PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, " +
+                        PopMoviesContract.TrailerEntry.COLUMN_TRAILER_KEY + " TEXT, " +
+                        PopMoviesContract.TrailerEntry.COLUMN_TRAILER_NAME + " TEXT, " +
                         "FOREIGN KEY(" + PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + ")" +
                         " REFERENCES " + PopMoviesContract.MoviesEntry.TABLE_NAME +
                         "(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
@@ -50,8 +50,8 @@ public class PopMoviesDbHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + PopMoviesContract.ReviewEntry.TABLE_NAME + " ( " +
                         //PopMoviesContract.ReviewEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
                         PopMoviesContract.ReviewEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, " +
-                        PopMoviesContract.ReviewEntry.COLUMN_AUTHOR + " TEXT NOT NULL, " +
-                        PopMoviesContract.ReviewEntry.COLUMN_CONTENT + " TEXT NOT NULL, " +
+                        PopMoviesContract.ReviewEntry.COLUMN_AUTHOR + " TEXT, " +
+                        PopMoviesContract.ReviewEntry.COLUMN_CONTENT + " TEXT, " +
                         "FOREIGN KEY(" + PopMoviesContract.ReviewEntry.COLUMN_MOVIE_ID + ")" +
                         " REFERENCES " + PopMoviesContract.MoviesEntry.TABLE_NAME +
                         "(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
@@ -62,7 +62,7 @@ public class PopMoviesDbHelper extends SQLiteOpenHelper {
         final String CREATE_TABLE_FAVORITES =
                 "CREATE TABLE " + PopMoviesContract.FavoriteMoviesEntry.TABLE_NAME + " ( " +
                         //PopMoviesContract.FavoriteMoviesEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
-                        PopMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID + " TEXT FOREIGN KEY NOT NULL, " +
+                        PopMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, " +
                         "FOREIGN KEY(" + PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + ")" +
                         " REFERENCES " + PopMoviesContract.FavoriteMoviesEntry.TABLE_NAME +
                         "(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
