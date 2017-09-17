@@ -11,9 +11,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PopMoviesDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movies.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
-    public PopMoviesDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public PopMoviesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -21,8 +21,8 @@ public class PopMoviesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         final String CREATE_TABLE_MOVIES =
                 "CREATE TABLE " + PopMoviesContract.MoviesEntry.TABLE_NAME + " (" +
-                        //PopMoviesContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + " INTEGER PRIMARY KEY NOT NULL, " +
+                        PopMoviesContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, " +
                         PopMoviesContract.MoviesEntry.COLUMN_MOVIE_TITLE + " TEXT NOT NULL, " +
                         PopMoviesContract.MoviesEntry.COLUMN_POSTER + " TEXT NOT NULL, " +
                         PopMoviesContract.MoviesEntry.COLUMN_BACKDROP_PATH + " TEXT NOT NULL, " +
@@ -35,37 +35,37 @@ public class PopMoviesDbHelper extends SQLiteOpenHelper {
 
         final String CREATE_TABLE_TRAILERS =
                 "CREATE TABLE " + PopMoviesContract.TrailerEntry.TABLE_NAME + " ( " +
-                        //PopMoviesContract.TrailerEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
+                        PopMoviesContract.TrailerEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
                         PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, " +
                         PopMoviesContract.TrailerEntry.COLUMN_TRAILER_KEY + " TEXT, " +
-                        PopMoviesContract.TrailerEntry.COLUMN_TRAILER_NAME + " TEXT, " +
-                        "FOREIGN KEY(" + PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + ")" +
-                        " REFERENCES " + PopMoviesContract.MoviesEntry.TABLE_NAME +
-                        "(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
+                        PopMoviesContract.TrailerEntry.COLUMN_TRAILER_NAME + " TEXT" +
+                        //"FOREIGN KEY(" + PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + ")" +
+                        //" REFERENCES " + PopMoviesContract.MoviesEntry.TABLE_NAME +
+                        //"(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
                         " );";
 
         db.execSQL(CREATE_TABLE_TRAILERS);
 
         final String CREATE_TABLE_REVIEWS =
                 "CREATE TABLE " + PopMoviesContract.ReviewEntry.TABLE_NAME + " ( " +
-                        //PopMoviesContract.ReviewEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
+                        PopMoviesContract.ReviewEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
                         PopMoviesContract.ReviewEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, " +
                         PopMoviesContract.ReviewEntry.COLUMN_AUTHOR + " TEXT, " +
-                        PopMoviesContract.ReviewEntry.COLUMN_CONTENT + " TEXT, " +
-                        "FOREIGN KEY(" + PopMoviesContract.ReviewEntry.COLUMN_MOVIE_ID + ")" +
-                        " REFERENCES " + PopMoviesContract.MoviesEntry.TABLE_NAME +
-                        "(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
+                        PopMoviesContract.ReviewEntry.COLUMN_CONTENT + " TEXT" +
+                        //"FOREIGN KEY(" + PopMoviesContract.ReviewEntry.COLUMN_MOVIE_ID + ")" +
+                        //" REFERENCES " + PopMoviesContract.MoviesEntry.TABLE_NAME +
+                        //"(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
                         " );";
 
         db.execSQL(CREATE_TABLE_REVIEWS);
 
         final String CREATE_TABLE_FAVORITES =
                 "CREATE TABLE " + PopMoviesContract.FavoriteMoviesEntry.TABLE_NAME + " ( " +
-                        //PopMoviesContract.FavoriteMoviesEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
-                        PopMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, " +
-                        "FOREIGN KEY(" + PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + ")" +
-                        " REFERENCES " + PopMoviesContract.FavoriteMoviesEntry.TABLE_NAME +
-                        "(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
+                        PopMoviesContract.FavoriteMoviesEntry._ID + " INTEGER PRIMARY KET AUTOINCREMENT, " +
+                        PopMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL" +
+                        //"FOREIGN KEY(" + PopMoviesContract.TrailerEntry.COLUMN_MOVIE_ID + ")" +
+                        //" REFERENCES " + PopMoviesContract.FavoriteMoviesEntry.TABLE_NAME +
+                        //"(" + PopMoviesContract.MoviesEntry.COLUMN_MOVIE_ID + ")" +
                         " );";
 
         db.execSQL(CREATE_TABLE_FAVORITES);

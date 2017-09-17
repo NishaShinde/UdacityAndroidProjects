@@ -1,14 +1,19 @@
 package com.example.android.popularmoviesapp.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
  * Created by dell on 04/09/2017.
  */
 
-public class PopMoviesContract {
+public final class PopMoviesContract {
 
-    private PopMoviesContract(){}
+    public static final String AUTHORITY = "com.example.android.popularmoviesapp";
+
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
+    public static final String PATH_FAVORITE_MOVIES = "favorite_movies";
 
     public static final class MoviesEntry implements BaseColumns {
         public static final String TABLE_NAME = "movies";
@@ -36,6 +41,9 @@ public class PopMoviesContract {
     }
 
     public static final class FavoriteMoviesEntry implements BaseColumns{
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITE_MOVIES).build();
+
         public static final String TABLE_NAME = "favorites";
         public static final String COLUMN_MOVIE_ID = "movie_id";
     }

@@ -27,11 +27,17 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.popularmoviesapp.view.MainActivity" />
+
         </activity>
         <activity
             android:name=".view.SettingsActivity"
             android:label="@string/action_settings">
         </activity>
+
+        <provider
+            android:authorities="com.example.android.popularmoviesapp"
+            android:name=".data.PopMoviesContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
